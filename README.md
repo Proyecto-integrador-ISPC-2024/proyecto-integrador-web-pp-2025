@@ -25,7 +25,7 @@ Equipo de desarrollo:
 - Julieta de los Angeles Negrete
 - Lautaro Nahuel Pena
 -
--
+- Jesica Silvina Soledad Alvarez
 - Leonardo Nicolas Plaza Domina
 -
 -
