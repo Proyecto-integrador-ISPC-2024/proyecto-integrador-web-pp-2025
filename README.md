@@ -21,7 +21,7 @@ Scrum master:
 - Cristian Emanuel Recabarren
 
 Equipo de desarrollo: 
--
+- Gustavo Ariel Toscano
 - 
 -
 -
