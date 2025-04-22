@@ -21,10 +21,10 @@ Scrum master:
 - Cristian Emanuel Recabarren
 
 Equipo de desarrollo: 
-- Gustavo Ariel Toscano
+- Gustavo Ariel Toscano :zzz:
 - Julieta de los Angeles Negrete
 - Lautaro Nahuel Pena
--
+- Valentina Tachini :sunglasses:
 - Jesica Silvina Soledad Alvarez
 - Leonardo Nicolas Plaza Domina
 -
