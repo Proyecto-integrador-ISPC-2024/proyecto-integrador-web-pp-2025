@@ -22,7 +22,7 @@ Scrum master:
 
 Equipo de desarrollo: 
 - Gustavo Ariel Toscano
-- 
+- Julieta de los Angeles Negrete
 -
 -
 -
