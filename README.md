@@ -23,7 +23,7 @@ Scrum master:
 Equipo de desarrollo: 
 - Gustavo Ariel Toscano
 - Julieta de los Angeles Negrete
--
+- Lautaro Nahuel Pena
 -
 -
 - Leonardo Nicolas Plaza Domina
