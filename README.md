@@ -27,6 +27,6 @@ Equipo de desarrollo:
 - Valentina Tachini
 - Jesica Silvina Soledad Alvarez
 - Leonardo Nicolas Plaza Domina
--
+- Denisse Araceli Sabeff
 -
 -
