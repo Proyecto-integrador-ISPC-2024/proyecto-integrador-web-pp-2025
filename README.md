@@ -16,3 +16,17 @@ El desarrollo sigue una metodología **Scrum** apoyada en un tablero Kanban para
 
 ## Equipo de Desarrollo
 La aplicación se desarrolla por el equipo de desarrolladores **DevTeamCba** integrado por:
+
+Scrum master: 
+- Cristian Emanuel Recabarren
+
+Equipo de desarrollo: 
+-
+- 
+-
+-
+-
+-
+-
+-
+-
