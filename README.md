@@ -28,5 +28,5 @@ Equipo de desarrollo:
 - Jesica Silvina Soledad Alvarez
 - Leonardo Nicolas Plaza Domina
 - Denisse Araceli Sabeff
--
+- CAMINOS PICCO, Albano Ezequiel
 -
