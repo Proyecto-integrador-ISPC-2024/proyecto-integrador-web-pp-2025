@@ -1,0 +1,93 @@
+<!-- <link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/> -->
+
+<div class="card-body">
+  <div class="row py-3 mb-3">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-4">
+      <div class="bg-image cardImg rounded d-flex align-items-center">
+        <img
+          class="w-100 rounded"
+          src="{{product.productos.imagen}}"
+          alt="{{ product.productos.nombre_producto}}"
+          loading="lazy"
+        />
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-6 col-lg-5 productDetails">
+      <h5 class="mt-2">{{ product.productos.nombre_producto}}</h5>
+      <ul class="list-unstyled my-2">
+        <li>
+          <p class="fs-5">${{ product.productos.precio }}</p>
+        </li>
+      </ul>
+      <ul class="col-12 col-sm-12 list-unstyled mt-5 mx-3 d-flex flex-row">
+        <li>
+          <button
+            class="mt-1 me-1 mb-1 p-2 material-symbols-sharp rounded btnDeleteItem"
+            (click)="deleteProduct()"
+          >
+            delete
+          </button>
+        </li>
+        <li>
+          <button
+            class="mt-1 me-1 mb-1 p-2 material-symbols-sharp rounded btnReduceItem"
+            (click)="decreaseAmount()"
+          >
+            remove
+          </button>
+        </li>
+        <li>
+          <button
+            class="mt-1 me-1 mb-1 p-2 material-symbols-sharp rounded btnAddItem"
+            (click)="increaseAmount()"
+          >
+            add
+          </button>
+        </li>
+      </ul>
+      <hr>
+      <ul>
+        <li>
+          <h5>Talle seleccionado:</h5>
+          <p>{{product.talleSeleccionado}}</p>
+          <!-- <div class="dropdown dropend">
+            <button
+              class="btn btn-success dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Elegir otros talles
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <button class="dropdown-item">M</button>
+              </li>
+              <li>
+                <button class="dropdown-item">L</button>
+              </li>
+              <li>
+                <button class="dropdown-item">XL</button>
+              </li>
+            </ul>
+          </div> -->
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 col-sm-12 col-md-6 col-lg-3 px-4 mt-2">
+      <ul class="p-0">
+        <li>
+          <h6>Cantidad:</h6>
+          <p class="fs-5">{{ product.cantidad }}</p>
+        </li>
+        <li>
+          <h6>Subtotal:</h6>
+          <p class="fs-5">{{ product.productos.precio * product.cantidad }}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

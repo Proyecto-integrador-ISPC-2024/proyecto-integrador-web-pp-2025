@@ -1,0 +1,74 @@
+<section class="container-fluid">
+  <h2 class="my-3">Gestión de pedidos</h2>
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <form class="d-flex" (submit)="onSearch(searchInput.value); $event.preventDefault()">
+        <input #searchInput type="text" class="form-control me-2" placeholder="Buscar pedido por N° de orden..." (input)="onSearch(searchInput.value)">
+        <button class="btn btn-success" type="submit">Buscar</button>
+      </form>
+    </div>
+  </div>
+  <div class="card text-center products-summary-card">
+    <div class="card-header d-flex justify-content-between">
+      <ul class="nav nav-tabs card-header-tabs align-items-end flex-wrap">
+        <li *ngFor="let tab of tabs" class="nav-item m-0">
+          <button class="nav-link py-2 px-3 text-center btn-block btn-custom"
+             [style.color]="tab.active ? '#ffffff' : '#ffffff'"
+             [style.backgroundColor]="tab.active ? (tab.isHistory ? '#21ad6c' : '#21ad6c') : '#166b43'"
+             (click)="toggleOrderHistory(tab.isHistory)">
+            {{ tab.title }}
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="card-body" *ngIf="!showOrderHistory">
+      <div class="order-card card p-4 mb-4" *ngFor="let order of filteredOrders">
+        <h4 class="order-title">Orden N°{{ order.id_pedido }}</h4>
+        <div class="order-details">
+          <p><strong>Cliente:</strong> {{ order.id_usuario }}</p>
+          <p><strong>Total:</strong> {{ order.total | currency }}</p>
+          <p><strong>Fecha de creación:</strong> {{ order.fecha | date: 'short' }}</p>
+          <p><strong>Estado:</strong> {{ order.estado }}</p>
+          <p><strong>Método de Pago:</strong> {{ formatFormasDePago(order.forma_de_pago) }}</p>
+          <div *ngFor="let detalle of order.detalles; let i = index" class="product-detail mb-3 p-3 border rounded">
+            <h5 class="product-title">Producto {{ i + 1 }}</h5>
+            <div class="product-info">
+              <p class="product-description"><strong>Nombre:</strong> {{ detalle.producto.nombre_producto }}</p>
+              <p class="product-description"><strong>Talle:</strong> {{ detalle.id_talle }}</p>
+              <p class="product-description"><strong>Cantidad:</strong> {{ detalle.cantidad }}</p>
+              <p class="product-description"><strong>Subtotal:</strong> {{ detalle.subtotal | currency }}</p>
+              <p class="product-description"><strong>Precio:</strong> {{ detalle.producto.precio | currency }}</p>
+              <img [src]="detalle.producto.imagen" alt="{{ detalle.producto.nombre_producto }}" class="product-image">
+            </div>
+          </div>
+        </div>
+        <div *ngIf="order.estado !== 'CANCELADO'" class="d-flex justify-content-end mt-3 w-100">
+          <button (click)="onCancelOrder(order.id_pedido)" class="btn btn-danger">Cancelar Orden</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body" *ngIf="showOrderHistory">
+      <div class="order-card card p-4 mb-4" *ngFor="let order of filteredOrders">
+        <h4 class="order-title">Orden N°{{ order.id_pedido }}</h4>
+        <div class="order-details">
+          <p><strong>Cliente:</strong> {{ order.id_usuario }}</p>
+          <p><strong>Total:</strong> {{ order.total | currency }}</p>
+          <p><strong>Fecha de creación:</strong> {{ order.fecha | date: 'short' }}</p>
+          <p><strong>Estado:</strong> {{ order.estado }}</p>
+          <p><strong>Método de Pago:</strong> {{ formatFormasDePago(order.forma_de_pago) }}</p>
+          <div *ngFor="let detalle of order.detalles; let i = index" class="product-detail mb-3 p-3 border rounded">
+            <h5 class="product-title">Producto {{ i + 1 }}</h5>
+            <div class="product-info">
+              <p class="product-description"><strong>Nombre:</strong> {{ detalle.producto.nombre_producto }}</p>
+              <p class="product-description"><strong>Talle:</strong> {{ detalle.id_talle }}</p>
+              <p class="product-description"><strong>Cantidad:</strong> {{ detalle.cantidad }}</p>
+              <p class="product-description"><strong>Subtotal:</strong> {{ detalle.subtotal | currency }}</p>
+              <p class="product-description"><strong>Precio:</strong> {{ detalle.producto.precio | currency }}</p>
+              <img [src]="detalle.producto.imagen" alt="{{ detalle.producto.nombre_producto }}" class="product-image">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
