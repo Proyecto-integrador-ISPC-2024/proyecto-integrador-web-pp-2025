@@ -86,7 +86,7 @@ export class RegisterFormComponent {
   } */
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { User } from '../../../interfaces/user';
+import { User } from '../../interfaces/user';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
@@ -134,9 +134,9 @@ export class RegisterFormComponent {
         nombre: this.form.get('nombre')?.value,
         apellido: this.form.get('apellido')?.value,
         email: this.form.get('email')?.value,
-        // userName: this.form.get('email')?.value, 
+        // userName: this.form.get('email')?.value,
         domicilio: this.form.get('domicilio')?.value,
-        password: this.form.get('password1')?.value, 
+        password: this.form.get('password1')?.value,
         role: 'cliente',
         id_usuario: 0
       };

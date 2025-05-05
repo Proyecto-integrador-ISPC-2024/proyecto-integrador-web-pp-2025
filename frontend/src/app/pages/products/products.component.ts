@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule, NgForOf, NgIf } from '@angular/common';
 import { CardProductComponent } from '../../components/card-product/card-product.component';
-import { ApiService } from '../../../services/api.service';
-import { Product } from '../../../interfaces/product';
-import { CartService } from '../../../services/cart.service';
+import { ApiService } from '../../services/api.service';
+import { Product } from '../../interfaces/product';
+import { CartService } from '../../services/cart.service';
 import { RouterLink } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../components/spinner/spinner.component';
 
@@ -15,7 +15,6 @@ import { LoadingSpinnerComponent } from '../../components/spinner/spinner.compon
     CardProductComponent,
     NgForOf,
     NgIf,
-    RouterLink,
     LoadingSpinnerComponent,
   ],
   templateUrl: './products.component.html',

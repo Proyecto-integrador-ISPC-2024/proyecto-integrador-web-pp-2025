@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CartItemComponent } from '../cart-item/cart-item.component';
-import { Product } from '../../../interfaces/product';
+import { Product } from '../../interfaces/product';
 import { NgForOf, NgIf } from '@angular/common';
 
 @Component({

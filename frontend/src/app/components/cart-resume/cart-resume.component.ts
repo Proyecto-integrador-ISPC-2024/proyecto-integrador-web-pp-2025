@@ -12,16 +12,16 @@ import {
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
-import { ApiService } from '../../../services/api.service';
-import { Product } from '../../../interfaces/product';
-import { CartOrder } from '../../../interfaces/cartOrder';
-import { PaymentMethodData } from '../../../interfaces/paymentMethodData';
-import { UserLocalStoraged } from '../../../interfaces/user';
+import { ApiService } from '../../services/api.service';
+import { Product } from '../../interfaces/product';
+import { CartOrder } from '../../interfaces/cartOrder';
+import { PaymentMethodData } from '../../interfaces/paymentMethodData';
+import { UserLocalStoraged } from '../../interfaces/user';
 
 @Component({
   selector: 'app-cart-resume',
   standalone: true,
-  imports: [ReactiveFormsModule, NgFor, NgSwitch, NgSwitchCase, NgIf],
+  imports: [ReactiveFormsModule, NgFor, NgIf],
   templateUrl: './cart-resume.component.html',
   styleUrl: './cart-resume.component.css',
 })
