@@ -1,0 +1,13 @@
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-terminos-condiciones',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './terminos-condiciones.component.html',
+  styleUrl: './terminos-condiciones.component.css'
+})
+export class TerminosCondicionesComponent {
+
+}
