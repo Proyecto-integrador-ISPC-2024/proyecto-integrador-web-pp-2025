@@ -7,7 +7,7 @@ Este repositorio fue creado en el marco academico de la materia de Práctica Pro
 - [Descripcion](#cDescripción)
 - [Metodología de trabajo](#Metodología-de-trabajo)
 - [Equipo de Desarrollo](#equipo-de-desarrollo)
-
+- [Wiki](https://github.com/Proyecto-integrador-ISPC-2024/proyecto-integrador-web-pp-2025/wiki)
 ## Descripción
 **Tienda de Campeones** es una tienda online que ofrece camisetas de fútbol de todos los países que han ganado la Copa del Mundo. La aplicación incluye una página web y una aplicación móvil para Android, permite a los usuarios registrarse, iniciar sesión, explorar productos categorizados por país, gestionar sus pedidos a través de un dashboard personalizado, contactar al equipo de soporte y confirmar sus compras de manera sencilla.
 
