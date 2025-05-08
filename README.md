@@ -29,4 +29,4 @@ Equipo de desarrollo:
 - Leonardo Nicolas Plaza Domina
 - Denisse Araceli Sabeff
 - CAMINOS PICCO, Albano Ezequiel
-- M. Victoria Urcola URCOLA,M. Victoria
+- Urcola, M. Victoria 
