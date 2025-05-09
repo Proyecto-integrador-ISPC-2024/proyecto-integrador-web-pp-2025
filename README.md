@@ -35,3 +35,7 @@ La aplicación se desarrolla por el equipo de desarrolladores **DevTeamCba** int
 
 - Gustavo Ariel Toscano  (ex integrante)
 - Cristian Emanuel Recabarren  (ex integrante)
+
+
+### Docente  :
+- Viviana GUILLEN
