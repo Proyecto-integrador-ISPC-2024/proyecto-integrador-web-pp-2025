@@ -1,0 +1,73 @@
+# Ignorar el entorno virtual
+venv/
+
+# Ignorar el archivo de configuración de variables de entorno
+.env
+
+# Ignorar archivos y carpetas de configuración de Python
+*.pyc
+__pycache__/
+
+# Ignorar archivos del sistema operativo (por ejemplo, macOS y Windows)
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de IDEs y editores (ejemplo para Visual Studio Code)
+.vscode/
+
+# Ignorar archivos de dependencias de Node (si estás usando frontend con Node.js)
+node_modules/
+
+# Ignorar archivos de configuración de base de datos
+*.db
+*.sqlite3
+
+# Ignorar configuraciones del frontend (si usas build o dist)
+build/
+dist/
+
+# Ignorar archivos de configuración de Docker (si usas Docker)
+.docker/
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+.connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
+.DS_Store
+Thumbs.db
+
+

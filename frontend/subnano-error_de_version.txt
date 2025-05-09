@@ -1,0 +1,16 @@
+curl -o node-v18.17.1-x64.msi https://nodejs.org/dist/v18.17.1/node-v18.17.1-x64.msi
+
+start node-v18.17.1-x64.msi
+
+node -v
+npm -v
+
+npm install -g npm@9.6.7
+npm -v
+
+npm uninstall -g @angular/cli
+npm install -g @angular/cli@17.3.17
+ng version
+
+npm install
+ng serve
