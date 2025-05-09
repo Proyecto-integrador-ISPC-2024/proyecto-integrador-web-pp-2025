@@ -24,7 +24,7 @@ class PedidosViewSet(viewsets.ModelViewSet):
          user = self.request.user
          if user.is_authenticated:
           if user.rol == 'ADMIN':
-            return Pedidos.objects.filter(estado='ACEPTADO')
+            return Pedidos.objects.all() 
           elif user.rol == 'CLIENTE':
             return Pedidos.objects.filter(id_usuario=user.id_usuario)
     # Si el usuario no esta autenticado devuelvo un queryset vacio

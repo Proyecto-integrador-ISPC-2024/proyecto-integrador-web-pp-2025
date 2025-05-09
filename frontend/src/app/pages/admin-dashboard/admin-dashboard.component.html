@@ -1,13 +1,21 @@
 <section class="dashboard-container p-4">
   <h1>Dashboard - Administración</h1>
-  <div class="m-4 px-2">
-    <div class="d-flex flex-row flex-wrap justify-content-between align-items-stretch">
-      <div class="col-sm-12 col-md-9 mb-4">
-        <app-management></app-management>
-      </div>
-      <div class="col-sm-12 col-md-3 mb-4 px-4">
-        <app-orders-summary></app-orders-summary>
-      </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-lg-9 mb-5 px-3">
+      <app-admin-management
+        [orders]="filteredOrders"
+        (searchOrderById)="searchOrderById($event)"
+        (cancelOrder)="onCancelOrder($event)"
+        (markAsShipped)="onMarkAsShipped($event)"
+        #adminManagement
+      ></app-admin-management>
+    </div>
+    <div class="col-sm-12 col-md-4 col-lg-3 mb-5 px-3">
+      <app-admin-orders-summary 
+        [orders]="filteredOrders" 
+        [resetSelection]="!selectedOrder" 
+        (selectedOrder)="selectOrder($event)"
+      ></app-admin-orders-summary>
     </div>
   </div>
 </section>
