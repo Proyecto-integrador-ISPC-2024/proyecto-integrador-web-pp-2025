@@ -95,10 +95,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # SECURITY WARNING: keep the secret key used in production secret!
-
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'django-insecure-=hb^58$j+@ym@-e_noir7=y=zdzs-=s!acra3q12x$y)+)v$hy'
+#SECRET_KEY = os.getenv('SECRET_KEY')
 
 DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'campeones',
+        'USER': 'root',
+        'PASSWORD': '****',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
+
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv('DB_NAME'),
@@ -110,7 +121,7 @@ DATABASES = {
             'sql_mode': 'traditional',
         }
     }
-}
+}'''
 
 
 # Configuración del correo
@@ -118,11 +129,17 @@ DATABASES = {
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_USER = 'tiendadecampeonescba@gmail.com'  
+EMAIL_HOST_PASSWORD = 'zkij hdwu viqb ybaz'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT=587
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+'''EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')  
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')'''
 
 
 # Password validation
