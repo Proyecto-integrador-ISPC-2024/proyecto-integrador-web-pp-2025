@@ -5,13 +5,13 @@ import { OrdersService } from '../../services/orders.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-orders-summary',
+  selector: 'app-admin-orders-summary',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './orders-summary.component.html',
-  styleUrls: ['./orders-summary.component.css']
+  templateUrl: './admin-orders-summary.component.html',
+  styleUrls: ['./admin-orders-summary.component.css']
 })
-export class OrdersSummaryComponent implements OnInit, OnDestroy {
+export class AdminOrdersSummaryComponent implements OnInit, OnDestroy {
   @Input() orders: DashboardOrder[] = [];
   @Input() set resetSelection(value: boolean) {
     if (value) {
