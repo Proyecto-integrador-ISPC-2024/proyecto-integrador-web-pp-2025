@@ -1,0 +1,385 @@
+.orders-summary-card {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(90vh - 180px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    padding: 0.7rem;
+    border-radius: 0.5rem;
+}
+
+.card-header {
+    flex-shrink: 0;
+    background-color: #ffffff;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 1rem 1.25rem;
+    font-size: 1.1rem;
+}
+
+.status-counters {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 0;
+}
+
+.count-item {
+    width: 100%;
+}
+
+.card-counts .badge {
+    font-weight: 500;
+    font-size: 0.8rem;
+    box-shadow: none;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    width: 100%;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.orders-list {
+    flex: 1 1 auto;
+    overflow-y: auto;
+}
+
+.list-group-item {
+    background-color: #f9f9f9;
+    padding: 0.75rem 1rem;
+    border-left: none;
+    border-right: none;
+}
+
+.order-item {
+    transition: all 0.3s ease;
+    margin-bottom: 0;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 0.85rem 1.1rem;
+}
+
+.order-item.selected {
+    background-color: #e2f0ff;
+    border-left: 4px solid #0d6efd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order-item:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card-order {
+    margin-bottom: 0.5rem;
+}
+
+.card-state {
+    display: flex;
+    align-items: center;
+}
+
+.text-muted {
+    margin-right: 0.5rem;
+}
+
+.badge {
+    padding: 0.4em 0.65em;
+    font-size: 0.85em;
+}
+
+@media (max-width: 992px) {
+    .orders-summary-card {
+        max-height: calc(80vh - 180px);
+        height: 100%;
+        padding: 0.6rem;
+    }
+    
+    .order-item {
+        font-size: 0.92rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .card-order {
+        margin-bottom: 0.45rem;
+    }
+
+    .card-counts {
+        padding: 0.6rem 0;
+    }
+
+    .card-counts .badge {
+        font-size: 0.8rem;
+        padding: 0.45rem 0.7rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .orders-summary-card {
+        max-height: calc(85vh - 140px);
+        height: 100%;
+        padding: 0.5rem;
+    }
+
+    .orders-summary-card .card-header {
+        padding: 0.7rem 0.9rem;
+        font-size: 1rem;
+    }
+
+    .order-item {
+        padding: 0.65rem 0.85rem;
+        font-size: 0.88rem;
+        border-radius: 0.2rem;
+    }
+
+    .card-order {
+        margin-bottom: 0.4rem;
+    }
+
+    .orders-summary-card .list-group-item {
+        padding: 0.65rem 0.85rem;
+    }
+
+    .card-counts {
+        padding: 0.5rem 0;
+    }
+
+    .card-counts .badge {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .product-title {
+      font-size: 0.78rem !important;
+    }
+  
+    .dropdown-menu {
+      font-size: 0.85em;
+    }
+    .dropdown-item {
+      font-size: 0.92em;
+    }
+  
+    .orders-container {
+      max-height: calc(80vh - 100px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      width: 100%;
+    }
+    
+    .card {
+      padding: 0.5rem;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    .tab-buttons-wrapper {
+      width: 100%;
+      justify-content: space-between;
+      gap: 4px;
+    }
+    
+    .tab-button {
+      flex: 1;
+      min-width: 0;
+      padding: 5px 6px;
+      height: 36px;
+    }
+  
+    .tab-text {
+      font-size: 0.7rem;
+      line-height: 1.1;
+    }
+  
+    .tab-icon {
+      font-size: 0.85rem;
+      margin-right: 2px;
+    }
+  
+    .product-grid {
+      grid-template-columns: 1fr;
+      gap: 6px;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    
+    .order-card {
+      padding: 8px;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+  
+    .product-detail {
+      padding: 6px;
+      margin-bottom: 8px;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    
+    .product-info {
+      width: 100%;
+      max-width: calc(100% - 50px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .text-secondary.fs-7 {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  
+    .product-image-container {
+      width: 40px;
+      height: 40px;
+      margin-right: 6px;
+    }
+  
+    .product-title {
+      font-size: 0.85rem;
+      margin-bottom: 0.2rem;
+    }
+  
+    .row.g-1 {
+      margin-left: -2px;
+      margin-right: -2px;
+    }
+  
+    .order-title {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+  
+    .card-body {
+      padding: 0.5rem;
+    }
+  
+    .btn {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.4rem;
+    }
+    .form-control {
+      height: 38px;
+      font-size: 0.65rem;
+    }
+    
+    .form-control::placeholder {
+      font-size: 0.65rem;
+    }
+    
+    .fs-7 {
+      font-size: 0.75rem;
+      line-height: 1.3;
+    }
+    
+    .fs-7 strong {
+      font-size: 0.75rem;
+    }
+    
+    .text-secondary.fs-7 {
+      font-size: 0.75rem;
+    }
+    
+    .order-card {
+      padding: 10px;
+    }
+    
+    .mb-2 {
+      margin-bottom: 0.3rem;
+    }
+    
+    .product-detail {
+      padding: 5px;
+    }
+    
+    .product-grid {
+      gap: 5px;
+    }
+  
+    .badge {
+      font-size: 0.65rem;
+      padding: 0.25em 0.5em;
+    }
+    
+    .bi {
+      font-size: 0.8rem;
+    }
+    
+    .btn-sm {
+      padding: 0.15rem 0.4rem;
+      font-size: 0.65rem;
+    }
+  
+    .filter-btn {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  
+    .filter-tag {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+    }
+  
+    .filter-tag-text {
+      font-size: 0.75rem;
+    }
+  
+    .filter-tag-close {
+      width: 16px;
+      height: 16px;
+    }
+  
+    .filter-tag-close i {
+      font-size: 0.75rem;
+    }
+  }
+  
+  @media (max-width: 375px) {
+    .filter-tag {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+    }
+  
+    .filter-tag-text {
+      font-size: 0.7rem;
+    }
+  
+    .filter-tag-close {
+      width: 14px;
+      height: 14px;
+    }
+  
+    .filter-tag-close i {
+      font-size: 0.7rem;
+    }
+  
+    .form-control {
+      height: 38px;
+      font-size: 0.6rem;
+    }
+    
+    .form-control::placeholder {
+      font-size: 0.6rem;
+    }
+  }

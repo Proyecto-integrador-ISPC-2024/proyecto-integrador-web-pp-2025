@@ -1,3 +1,10 @@
+section {
+  min-height: calc(80vh - 180px); 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .dashboard-choice{
   background-color: #198754;
   box-shadow: 0 0 .5rem transparent;

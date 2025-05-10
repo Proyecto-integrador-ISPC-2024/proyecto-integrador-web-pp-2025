@@ -8,7 +8,7 @@
             <div class="input-group">
               <span class="input-group-text"><i class="bi bi-search"></i></span>
               <div class="position-relative w-100 d-flex align-items-center">
-                <input #searchInput type="text" class="form-control" placeholder="Buscar N° o nombre de camiseta..." [disabled]="selectedOrderId && orderExists(selectedOrderId)">
+                <input #searchInput type="text" class="form-control" placeholder="Buscar N°, cliente o camiseta..." [disabled]="selectedOrderId && orderExists(selectedOrderId)">
                 <button *ngIf="searchInput.value" type="button" class="btn-clear" (click)="clearSearch(searchInput)" [disabled]="selectedOrderId && orderExists(selectedOrderId)">
                   <i class="bi bi-x"></i>
                 </button>
@@ -121,8 +121,15 @@
             </div>
           </div>
           <div class="d-flex justify-content-end mt-3">
-            <button *ngIf="order.estado !== 'CANCELADO' && order.estado !== 'ENVIADO' && order.estado !== 'ENTREGADO'" (click)="onCancelOrder(order.id_pedido)" class="btn btn-danger btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar Pedido</button>
-            <a *ngIf="order.estado === 'ENVIADO'" href="https://www.andreani.com/?tab=seguir-envio" target="_blank" class="btn btn-primary btn-sm"><i class="bi bi-truck me-1"></i>Seguí tu Pedido</a>
+            <button *ngIf="order.estado === 'ACEPTADO'" (click)="markAsShipped.emit(order.id_pedido)" class="btn btn-primary btn-sm me-2">
+              <i class="bi bi-truck me-1"></i>Marcar como enviado
+            </button>
+            <a *ngIf="order.estado === 'ENVIADO'" href="https://www.andreani.com/?tab=seguir-envio" target="_blank" class="btn btn-primary btn-sm me-2">
+              <i class="bi bi-truck me-1"></i>Ver logística de envío
+            </a>
+            <button *ngIf="order.estado !== 'CANCELADO' && order.estado !== 'ENVIADO'" (click)="onCancelOrder(order.id_pedido)" class="btn btn-danger btn-sm">
+              <i class="bi bi-x-circle me-1"></i>Cancelar Pedido
+            </button>
           </div>
         </div>
         <div class="p-4 text-center" *ngIf="filteredOrders.length === 0">

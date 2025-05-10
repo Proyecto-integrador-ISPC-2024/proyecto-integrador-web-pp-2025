@@ -419,7 +419,7 @@
 }
 
 @media (max-width: 576px) {
-
+  
   h2 {
     font-size: 1rem;
     line-height: 1.1;
@@ -428,7 +428,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
+
   .product-title {
     font-size: 0.78rem !important;
   }

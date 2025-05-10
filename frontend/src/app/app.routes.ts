@@ -13,7 +13,7 @@ import { RegisterFormComponent } from './components/register-form/register-form.
 import { authGuard } from './guards/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { LogoutModalComponent } from './components/logout-modal/logout-modal.component';
-import { TerminosCondicionesComponent } from './pages/terminos-condiciones/terminos-condiciones.component';
+import { ClientDatosComponent } from './pages/client-datos/client-datos.component';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -31,8 +31,8 @@ export const routes: Routes = [
   { path: 'admin-dashboard', component: AdminDashboardComponent },
 
   { path: 'client-dashboard', component: ClientDashboardComponent, canActivate: [authGuard] },
-  
-  { path: 'terminos-condiciones', component: TerminosCondicionesComponent },
+
+  {path: 'client-datos', component: ClientDatosComponent},
 
   { path: '**', component: NotFoundComponent },
 

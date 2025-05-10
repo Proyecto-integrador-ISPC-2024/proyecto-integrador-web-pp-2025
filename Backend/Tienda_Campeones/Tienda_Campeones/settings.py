@@ -1,6 +1,6 @@
-
 from datetime import timedelta
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -9,8 +9,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=hb^58$j+@ym@-e_noir7=y=zdzs-=s!acra3q12x$y)+)v$hy'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,6 +43,7 @@ MIDDLEWARE = [
 ]
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:4200",
+    "http://127.0.0.1:4200",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
@@ -60,7 +59,7 @@ REST_FRAMEWORK = {
 }
 SIMPLE_JWT = {
     'USER_ID_FIELD': 'id_usuario',
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=45),  
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
@@ -87,21 +86,59 @@ WSGI_APPLICATION = 'Tienda_Campeones.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+import os
+from dotenv import load_dotenv
+
+
+# Cargar el archivo .env
+load_dotenv()
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-=hb^58$j+@ym@-e_noir7=y=zdzs-=s!acra3q12x$y)+)v$hy'
+#SECRET_KEY = os.getenv('SECRET_KEY')
 
 DATABASES = {
     'default': {
-       'ENGINE': 'django.db.backends.mysql',
-       'NAME': 'campeones',
-       'USER': 'root',
-       'PASSWORD': 'root',
-       'HOST': 'localhost',
-       'PORT': '3306',
-       'OPTIONS': {
-          'sql_mode': 'traditional',
-            }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'campeones',
+        'USER': 'root',
+        'PASSWORD': '****',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
+
+'''DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT', '3306'),  # 3306 es el valor predeterminado para MySQL
+        'OPTIONS': {
+            'sql_mode': 'traditional',
         }
     }
+}'''
 
+
+# Configuración del correo
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = 'tiendadecampeonescba@gmail.com'  
+EMAIL_HOST_PASSWORD = 'zkij hdwu viqb ybaz'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT=587
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+'''EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')  
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')'''
 
 
 # Password validation

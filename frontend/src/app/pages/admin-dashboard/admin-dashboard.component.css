@@ -1,0 +1,21 @@
+.dashboard-container {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-x: hidden;
+    min-height: calc(100vh - 180px); 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+@media (max-width: 576px) {
+  h1 {
+    font-size: 1.20rem;
+    line-height: 1.1;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

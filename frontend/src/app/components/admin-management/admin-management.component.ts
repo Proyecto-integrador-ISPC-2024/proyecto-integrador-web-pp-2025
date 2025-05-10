@@ -4,14 +4,14 @@ import { DashboardOrder } from '../../interfaces/order';
 import { OrdersService } from '../../services/orders.service';
 
 @Component({
-  selector: 'app-order-management',
+  selector: 'app-admin-management',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './order-management.component.html',
-  styleUrls: ['./order-management.component.css']
+  templateUrl: './admin-management.component.html',
+  styleUrls: ['./admin-management.component.css']
 })
 
-export class OrderManagementComponent implements OnInit, OnDestroy {
+export class AdminManagementComponent implements OnInit, OnDestroy {
 
   @Input() set orders(value: DashboardOrder[]) {
     this._orders = value;
@@ -21,6 +21,7 @@ export class OrderManagementComponent implements OnInit, OnDestroy {
   }
   @Output() cancelOrder = new EventEmitter<number>();
   @Output() searchOrderById = new EventEmitter<number>();
+  @Output() markAsShipped = new EventEmitter<number>();
   @ViewChild('searchInput') searchInputElement!: ElementRef<HTMLInputElement>;
   
   private _orders: DashboardOrder[] = [];
@@ -46,15 +47,7 @@ export class OrderManagementComponent implements OnInit, OnDestroy {
   constructor(private ordersService: OrdersService) { }
   
   ngOnInit(): void {
-    const currentUserStr = localStorage.getItem('currentUser');
-    let isAdmin = false;
-    if (currentUserStr) {
-      const currentUser = JSON.parse(currentUserStr);
-      isAdmin = currentUser?.rol === 'admin';
-    }
-    if (isAdmin) {
-      this.loadUsers();
-    }
+    this.loadUsers();
     this.loadCurrentUser();
     this.ordersService.currentStatusFilter$.subscribe(status => {
       this.currentStatusFilter = status;
@@ -121,10 +114,16 @@ export class OrderManagementComponent implements OnInit, OnDestroy {
         return [selectedOrder];
       }
     }
+    // Búsqueda por nombre de cliente o producto
     if (this.searchTerm.trim() && isNaN(Number(this.searchTerm))) {
+      const searchTermLower = this.searchTerm.toLowerCase();
       filtered = filtered.filter(order => {
+        const clientName = this.getUserName(order.id_usuario).toLowerCase();
+        if (clientName.includes(searchTermLower)) {
+          return true;
+        }
         return order.detalles.some(detalle => 
-          detalle.producto.nombre_producto.toLowerCase().includes(this.searchTerm.toLowerCase())
+          detalle.producto.nombre_producto.toLowerCase().includes(searchTermLower)
         );
       });
     }
@@ -180,6 +179,28 @@ export class OrderManagementComponent implements OnInit, OnDestroy {
           this.setErrorWithTimeout(`El pedido #${orderId} no existe`);
         }
       }
+    } else {
+      const searchTermLower = this.searchTerm.toLowerCase();
+      
+      let filteredByStatus = this.orders;
+      if (this.currentStatusFilter !== 'TODOS') {
+        filteredByStatus = this.orders.filter(order => order.estado === this.currentStatusFilter);
+      }
+      
+      const hasResults = filteredByStatus.some(order => {
+        const clientName = this.getUserName(order.id_usuario).toLowerCase();
+        if (clientName.includes(searchTermLower)) {
+          return true;
+        }
+        
+        return order.detalles.some(detalle => 
+          detalle.producto.nombre_producto.toLowerCase().includes(searchTermLower)
+        );
+      });
+      if (!hasResults) {
+        this.setErrorWithTimeout(`No se encontraron resultados para "${this.searchTerm}"`);
+      }
+      this._orders = [...this._orders];
     }
   }
   
@@ -296,5 +317,9 @@ export class OrderManagementComponent implements OnInit, OnDestroy {
   
   clearSelection(): void {
     this.selectedOrderId = null;
+  }
+
+  onShipOrder(id_pedido: number) {
+    this.markAsShipped.emit(id_pedido);
   }
 }
