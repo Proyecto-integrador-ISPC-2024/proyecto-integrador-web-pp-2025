@@ -59,4 +59,10 @@ export class UserService {
     }
     return throwError(() => new Error(errorMessage));
   }
+  
+  getAllUsers(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiBaseUrl, { headers: this.getHeaders() }).pipe(
+      catchError((error) => this.handleError(error))
+    );
+  }
 }

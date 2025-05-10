@@ -273,9 +273,15 @@ export class AdminManagementComponent implements OnInit, OnDestroy {
   }
   
   //  Métodos de utilidad 
-  formatFormasDePago(forma_de_pago: { forma_de_pago_descripcion: string }[]): string {
-    if (!forma_de_pago) return '';
-    return forma_de_pago.map(fp => fp.forma_de_pago_descripcion).join(', ');
+  formatFormasDePago(forma_de_pago: { forma_de_pago_descripcion: string, tarjeta_nombre?: string }[]): string {
+    if (!forma_de_pago || forma_de_pago.length === 0) return 'No especificado';
+    
+    return forma_de_pago.map(fp => {
+      if (fp.forma_de_pago_descripcion.toLowerCase() === 'credito' && fp.tarjeta_nombre) {
+        return `${fp.forma_de_pago_descripcion} - ${fp.tarjeta_nombre}`;
+      }
+      return fp.forma_de_pago_descripcion;
+    }).join(', ');
   }
   
   getUserName(userId: number): string {
@@ -314,7 +320,6 @@ export class AdminManagementComponent implements OnInit, OnDestroy {
   }
 
   onShipOrder(id_pedido: number) {
-    console.log('Shipping order:', id_pedido);
     this.markAsShipped.emit(id_pedido);
   }
 }

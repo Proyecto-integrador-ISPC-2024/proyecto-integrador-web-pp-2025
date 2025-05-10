@@ -6,6 +6,7 @@ import { OrdersService } from '../../services/orders.service';
 import { DashboardOrder } from '../../interfaces/order';
 import { catchError, of, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -18,30 +19,25 @@ export class AdminDashboardComponent implements OnInit {
   orders: DashboardOrder[] = [];
   filteredOrders: DashboardOrder[] = [];
   selectedOrder: DashboardOrder | null = null;
-  toastService: any; 
   
   @ViewChild('adminManagement') adminManagement!: AdminManagementComponent;
 
-  constructor(private ordersService: OrdersService) {}
+  constructor(
+    private ordersService: OrdersService,
+    private toastService: ToastService
+  ) {}
   
   ngOnInit() {
-    this.loadOrders().subscribe({
-      error: (error) => console.error('Error cargando pedidos:', error)
-    });
+    this.loadOrders().subscribe();
   }
   
   loadOrders(): Observable<DashboardOrder[]> {
     return this.ordersService.getAllOrdersAdmin().pipe(
-      catchError(error => {
-        console.error('Error cargando pedidos:', error);
-        return of([]);
-      }),
+      catchError(() => of([])),
       tap((orders: DashboardOrder[]) => {
         if (Array.isArray(orders)) {
           this.orders = orders;
           this.filteredOrders = orders;
-        } else {
-          console.error('La respuesta de pedidos no es un array:', orders);
         }
       })
     );
@@ -58,9 +54,6 @@ export class AdminDashboardComponent implements OnInit {
             if (order) {
               this.filteredOrders = [order];
             }
-          },
-          error: (error) => {
-            console.error(`Error buscando pedido por ID ${id}:`, error);
           }
         });
       }
@@ -87,6 +80,7 @@ export class AdminDashboardComponent implements OnInit {
   onCancelOrder(id_pedido: number): void {
     this.ordersService.cancelOrder(id_pedido).subscribe({
       next: () => {
+        this.toastService.showSuccess('Pedido cancelado exitosamente');
         this.selectedOrder = null;
         if (this.adminManagement) {
           this.adminManagement.clearSelection();
@@ -94,17 +88,16 @@ export class AdminDashboardComponent implements OnInit {
         this.loadOrders().subscribe({
           next: () => {
             this.filteredOrders = [...this.orders];
-          },
-          error: (error) => console.error('Error cargando pedidos:', error)
+          }
         });
-      },
-      error: (error) => console.error('Error cancelando pedido:', error)
+      }
     });
   }
   
   onMarkAsShipped(orderId: number) {
-    this.ordersService.markOrderAsShipped(orderId, 'ENVIADO').subscribe({
+    this.ordersService.shipOrder(orderId).subscribe({
       next: () => {
+        this.toastService.showSuccess('Pedido marcado como enviado exitosamente');
         this.selectedOrder = null;
         if (this.adminManagement) {
           this.adminManagement.clearSelection();
@@ -112,24 +105,9 @@ export class AdminDashboardComponent implements OnInit {
         this.loadOrders().subscribe({
           next: () => {
             this.filteredOrders = [...this.orders];
-          },
-          error: (error) => console.error('Error cargando pedidos:', error)
+          }
         });
-      },
-      error: (error) => {
-        console.error('Error al marcar pedido como enviado:', error);
       }
-    });
-  }
-  
-  onShipOrder(id_pedido: number): void {
-    this.ordersService.shipOrder(id_pedido).subscribe({
-      next: () => {
-        this.loadOrders().subscribe({
-          error: (error: any) => console.error('Error cargando pedidos:', error)
-        });
-      },
-      error: (error: any) => console.error('Error enviando pedido:', error)
     });
   }
 }

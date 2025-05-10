@@ -7,6 +7,7 @@ import { OrdersService } from '../../services/orders.service';
 import { DashboardOrder } from '../../interfaces/order';
 import { catchError, of, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-client-dashboard',
@@ -24,7 +25,10 @@ export class ClientDashboardComponent implements OnInit {
   
   @ViewChild('orderManagement') orderManagement!: OrderManagementComponent;
 
-  constructor(private ordersService: OrdersService) {
+  constructor(
+    private ordersService: OrdersService,
+    private toastService: ToastService
+  ) {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (currentUser && currentUser.id_usuario) {
       this.id_usuario = currentUser.id_usuario;
@@ -34,23 +38,16 @@ export class ClientDashboardComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.loadOrders().subscribe({
-      error: (error) => console.error('Error loading orders:', error)
-    });
+    this.loadOrders().subscribe();
   }
   
   loadOrders(): Observable<DashboardOrder[]> {
     return this.ordersService.getAllOrders().pipe(
-      catchError(error => {
-        console.error('Error loading orders:', error);
-        return of([]);
-      }),
+      catchError(() => of([])),
       tap((orders: DashboardOrder[]) => {
         if (Array.isArray(orders)) {
           this.orders = orders;
           this.filteredOrders = orders.filter(order => order.id_usuario === this.id_usuario);
-        } else {
-          console.error('Orders response is not an array:', orders);
         }
       })
     );
@@ -67,9 +64,6 @@ export class ClientDashboardComponent implements OnInit {
             if (order && order.id_usuario === this.id_usuario) {
               this.filteredOrders = [order];
             }
-          },
-          error: (error) => {
-            console.error(`Error searching order by ID ${id}:`, error);
           }
         });
       }
@@ -113,6 +107,7 @@ export class ClientDashboardComponent implements OnInit {
   onCancelOrder(id_pedido: number): void {
     this.ordersService.cancelOrder(id_pedido).subscribe({
       next: () => {
+        this.toastService.showSuccess('Pedido cancelado exitosamente');
         this.selectedOrder = null;
         if (this.orderManagement) {
           this.orderManagement.clearSelection();
@@ -120,11 +115,9 @@ export class ClientDashboardComponent implements OnInit {
         this.loadOrders().subscribe({
           next: () => {
             this.filteredOrders = [...this.orders];
-          },
-          error: (error) => console.error('Error cargando pedidos:', error)
+          }
         });
-      },
-      error: (error) => console.error('Error cancelando pedido:', error)
+      }
     });
   }
 }
