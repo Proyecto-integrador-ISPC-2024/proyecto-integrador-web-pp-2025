@@ -14,6 +14,7 @@ import { authGuard } from './guards/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { LogoutModalComponent } from './components/logout-modal/logout-modal.component';
 import { ClientDatosComponent } from './pages/client-datos/client-datos.component';
+import { TerminosCondicionesComponent } from './pages/terminos-condiciones/terminos-condiciones.component'; 
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -33,6 +34,8 @@ export const routes: Routes = [
   { path: 'client-dashboard', component: ClientDashboardComponent, canActivate: [authGuard] },
 
   {path: 'client-datos', component: ClientDatosComponent},
+
+  { path: 'terminos-condiciones', component: TerminosCondicionesComponent },
 
   { path: '**', component: NotFoundComponent },
 
