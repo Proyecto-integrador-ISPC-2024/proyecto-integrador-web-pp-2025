@@ -4,6 +4,8 @@ import { AuthService } from '../../services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+declare var bootstrap: any;
+
 @Component({
   selector: 'app-login-form',
   standalone: true,
@@ -24,8 +26,19 @@ export class LoginFormComponent {
       .subscribe({
         next: (response) => {
           if (response && response.token) {
+            // Cerrar el modal
+            const loginModal = document.getElementById('loginModal');
+            if (loginModal) {
+              const modal = bootstrap.Modal.getInstance(loginModal);
+              modal?.hide();
+            }
+            
             alert('Autenticación exitosa');
-            this.router.navigateByUrl('dashboard');
+            this.router.navigateByUrl('/');
+            
+            // Limpiar formulario
+            this.email = '';
+            this.password = '';
           } else {
             alert('Error de autenticación: Respuesta del servidor incompleta');
           }
