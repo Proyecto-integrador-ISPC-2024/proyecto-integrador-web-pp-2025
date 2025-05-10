@@ -1,0 +1,93 @@
+<div class="container mt-4" style="height: 56vh;">
+  <h2 class="mb-4">Mis Datos Personales</h2>
+  
+  <div *ngIf="isLoading" class="alert alert-info">Cargando datos del usuario...</div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+  <form [formGroup]="profileForm">
+    <!-- Campo Nombre -->
+    <div class="mb-3 row">
+      <label class="col-sm-2 col-form-label">Nombre:</label>
+      <div class="col-sm-6">
+        <input type="text" 
+               class="form-control" 
+               formControlName="nombre" 
+               [class.is-invalid]="editingField === 'nombre' && profileForm.get('nombre')?.invalid"
+               [class.is-valid]="editingField === 'nombre' && profileForm.get('nombre')?.valid">
+        <div *ngIf="editingField === 'nombre' && profileForm.get('nombre')?.invalid" class="invalid-feedback">
+          {{ getFieldError('nombre') }}
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <button *ngIf="editingField !== 'nombre'" type="button" class="btn btn-outline-primary" (click)="startEditing('nombre')">
+          <i class="bi bi-pencil"></i> Editar
+        </button>
+        <button *ngIf="editingField === 'nombre'" type="button" class="btn btn-success me-2" (click)="saveField('nombre')"
+                [disabled]="profileForm.get('nombre')?.invalid">
+          <i class="bi bi-check"></i> Guardar
+        </button>
+        <button *ngIf="editingField === 'nombre'" type="button" class="btn btn-outline-secondary" (click)="cancelEditing()">
+          <i class="bi bi-x"></i> Cancelar
+        </button>
+      </div>
+    </div>
+
+    <!-- Campo Apellido -->
+    <div class="mb-3 row">
+      <label class="col-sm-2 col-form-label">Apellido:</label>
+      <div class="col-sm-6">
+        <input type="text" 
+               class="form-control" 
+               formControlName="apellido"
+               [class.is-invalid]="editingField === 'apellido' && profileForm.get('apellido')?.invalid"
+               [class.is-valid]="editingField === 'apellido' && profileForm.get('apellido')?.valid">
+        <div *ngIf="editingField === 'apellido' && profileForm.get('apellido')?.invalid" class="invalid-feedback">
+          {{ getFieldError('apellido') }}
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <button *ngIf="editingField !== 'apellido'" type="button" class="btn btn-outline-primary" (click)="startEditing('apellido')">
+          <i class="bi bi-pencil"></i> Editar
+        </button>
+        <button *ngIf="editingField === 'apellido'" type="button" class="btn btn-success me-2" (click)="saveField('apellido')"
+                [disabled]="profileForm.get('apellido')?.invalid">
+          <i class="bi bi-check"></i> Guardar
+        </button>
+        <button *ngIf="editingField === 'apellido'" type="button" class="btn btn-outline-secondary" (click)="cancelEditing()">
+          <i class="bi bi-x"></i> Cancelar
+        </button>
+      </div>
+    </div>
+
+    <!-- Campo Dirección  -->
+    <div class="mb-3 row">
+      <label class="col-sm-2 col-form-label">Dirección:</label>
+      <div class="col-sm-6">
+        <input type="text" 
+               class="form-control" 
+               formControlName="domicilio"  
+               [class.is-invalid]="editingField === 'domicilio' && profileForm.get('domicilio')?.invalid"
+               [class.is-valid]="editingField === 'domicilio' && profileForm.get('domicilio')?.valid">
+        <div *ngIf="editingField === 'domicilio' && profileForm.get('domicilio')?.invalid" class="invalid-feedback">
+          {{ getFieldError('domicilio') }}
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <button *ngIf="editingField !== 'domicilio'" type="button" class="btn btn-outline-primary" (click)="startEditing('domicilio')">
+          <i class="bi bi-pencil"></i> Editar
+        </button>
+        <button *ngIf="editingField === 'domicilio'" type="button" class="btn btn-success me-2" (click)="saveField('domicilio')"
+                [disabled]="profileForm.get('domicilio')?.invalid">
+          <i class="bi bi-check"></i> Guardar
+        </button>
+        <button *ngIf="editingField === 'domicilio'" type="button" class="btn btn-outline-secondary" (click)="cancelEditing()">
+          <i class="bi bi-x"></i> Cancelar
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>
