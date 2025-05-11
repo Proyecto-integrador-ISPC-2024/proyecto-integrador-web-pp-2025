@@ -53,7 +53,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 class UsuarioListSerializer(serializers.ModelSerializer):    
     class Meta:
         model = Usuarios
-        fields = ['nombre', 'apellido', 'email', 'domicilio','rol', 'is_active', 'is_staff']
+        fields = ['id_usuario', 'nombre', 'apellido', 'email', 'domicilio','rol', 'is_active', 'is_staff']
         
         
 class adminSerializer(serializers.ModelSerializer):

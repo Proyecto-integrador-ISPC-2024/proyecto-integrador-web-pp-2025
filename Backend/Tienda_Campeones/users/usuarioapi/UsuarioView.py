@@ -17,7 +17,7 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.request.method == 'POST':
             permission_classes = [permissions.AllowAny]
-        elif self.request.method in ['PUT', 'PATCH', 'DELETE']:
+        elif self.request.method in ['GET', 'PUT', 'PATCH', 'DELETE']:
             permission_classes = [permissions.IsAuthenticated]
         else:
             permission_classes = [permissions.IsAdminUser]
@@ -55,6 +55,13 @@ class UsuarioViewSet(viewsets.ModelViewSet):
         instance.is_active = False
         instance.save()
         return Response({'detail': 'Usuario inactivado exitosamente.'}, status=status.HTTP_204_NO_CONTENT)
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.id_usuario != request.user.id_usuario and not request.user.is_staff:
+            return Response({'detail': 'No tienes permiso para ver estos datos.'}, status=status.HTTP_403_FORBIDDEN)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
     
 class AdminViewSet(viewsets.ModelViewSet):
     serializer_class = adminSerializer
@@ -105,6 +112,3 @@ class AdminViewSet(viewsets.ModelViewSet):
      instance.set_password(new_password)
      instance.save()
      return Response({'mensaje': 'La contraseña del usuario se actualizo correctamente.'}, status=status.HTTP_200_OK)
- 
- 
-       
