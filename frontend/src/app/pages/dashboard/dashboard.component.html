@@ -3,11 +3,11 @@
   <h2 class="mx-5 my-1">Seleccioná la opción correspondiente</h2>
   <div class="p-4 mx-5 my-5 d-flex flex-row flex-wrap justify-content-evenly align-items-stretch rounded">
     <a *ngIf="isClient()" class="nav-link fw-bold fs-3 btn btn-success p-5 m-3 dashboard-choice" [routerLink]="['/client-dashboard']"
-      >Panel de control de clientes</a
+      >Panel de clientes</a
     >
     
     <a *ngIf="isAdmin()" class="nav-link fw-bold fs-3 btn btn-success p-5 m-3 dashboard-choice" [routerLink]="['/admin-dashboard']"
-      >Panel de control de administración</a
+      >Panel de administrador</a
     >
     <a class="nav-link fw-bold fs-3 btn btn-success p-5 m-3 dashboard-choice" [routerLink]="['/client-datos']"
       >Mis Datos</a>
