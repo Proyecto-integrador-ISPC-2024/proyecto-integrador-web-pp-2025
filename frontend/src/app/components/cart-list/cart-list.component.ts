@@ -6,7 +6,7 @@ import { NgForOf, NgIf } from '@angular/common';
 @Component({
   selector: 'app-cart-list',
   standalone: true,
-  imports: [CartItemComponent, NgForOf, NgIf],
+  imports: [CartItemComponent],
   templateUrl: './cart-list.component.html',
   styleUrls: ['./cart-list.component.css'],
 })

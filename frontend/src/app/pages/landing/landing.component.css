@@ -1,0 +1,17 @@
+.btn-explora-productos {
+    background: linear-gradient(135deg, #12a349, #107a45); 
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-weight: bold;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+}
+
+.btn-explora-productos:hover {
+    background: linear-gradient(135deg, #107a45, #12a349); 
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
