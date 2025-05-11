@@ -24,8 +24,13 @@
 
 
 
-                <span class="material-symbols-sharp ms-2 d-block" id="loginVisibilityOn"
-                  (click)="togglePasswordVisibility()">visibility</span>
+                <span class="material-symbols-sharp ms-2 d-block"
+                      id="loginVisibilityOn"
+                      role="button"
+                      tabindex="0"
+                      (click)="togglePasswordVisibility()"
+                      (keydown.enter)="togglePasswordVisibility()">visibility
+                </span>
               </div>
 
             </div>

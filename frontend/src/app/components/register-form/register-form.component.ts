@@ -127,9 +127,8 @@ export class RegisterFormComponent {
   }
 
   onEnviar(event: Event): void {
-    event.preventDefault;
+    event.preventDefault();
     if (this.form.valid) {
-      console.log("Enviando formulario...");
       const newUser: User = {
         nombre: this.form.get('nombre')?.value,
         apellido: this.form.get('apellido')?.value,
