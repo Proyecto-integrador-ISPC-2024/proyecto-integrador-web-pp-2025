@@ -90,6 +90,8 @@ import { User } from '../../interfaces/user';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-register-form',
@@ -103,7 +105,7 @@ export class RegisterFormComponent {
   usuario: User = new User();
   isSubmitting = false;
   constructor(private formBuilder: FormBuilder,
-    private authService: AuthService, private router: Router) {
+    private authService: AuthService, private router: Router, private toastr: ToastrService) {
     this.form = this.formBuilder.nonNullable.group(
       {
         nombre: ['', [Validators.required]],
@@ -145,7 +147,7 @@ export class RegisterFormComponent {
           console.log(data.id_usuario);
           console.log(this.form.value as User)
           if (data.id_usuario > 0) {
-            alert("Registro exitoso. A continuación, por favor Inicie Sesión.");
+            this.toastr.success('Registro exitoso. A continuación, por favor Inicie Sesión.', '¡Listo!');
             this.disableFormFields();
           }
         })

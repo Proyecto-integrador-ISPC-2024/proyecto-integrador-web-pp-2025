@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+
 
 declare var bootstrap: any;
 
@@ -18,7 +20,7 @@ export class LoginFormComponent {
   password: string = '';
   passwordVisible: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
 
   login() {
     this.authService
@@ -33,22 +35,19 @@ export class LoginFormComponent {
               modal?.hide();
             }
             
-            alert('Autenticación exitosa');
+            this.toastr.success('Autenticación exitosa', 'Bienvenido');
             this.router.navigateByUrl('/');
             
             // Limpiar formulario
             this.email = '';
             this.password = '';
           } else {
-            alert('Error de autenticación: Respuesta del servidor incompleta');
+            this.toastr.warning('Respuesta del servidor incompleta', 'Error de autenticación');
           }
         },
         error: (err) => {
           console.error('Error de autenticación:', err);
-          alert(
-            'Error de autenticación: ' +
-              (err.error.message || 'Ocurrió un error')
-          );
+          this.toastr.error(err.error.message || 'Ocurrió un error','Error de autenticación');
         },
       });
   }

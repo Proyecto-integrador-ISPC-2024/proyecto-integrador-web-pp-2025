@@ -7,6 +7,8 @@ import { CartService } from '../../services/cart.service';
 import { ApiService } from '../../services/api.service';
 import { PaymentMethodData } from '../../interfaces/paymentMethodData';
 import { RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-cart',
@@ -26,7 +28,8 @@ export class CartComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -74,10 +77,7 @@ export class CartComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error fetching payment methods:', error);
-          alert(
-            'Error al obtener los métodos de pago: ' +
-              (error.error.message || 'Ocurrió un error')
-          );
+          this.toastr.error(error.error.message || 'Ocurrió un error al obtener los métodos de pago','Error');
         },
       });
   }
