@@ -17,6 +17,8 @@ import { Product } from '../../interfaces/product';
 import { CartOrder } from '../../interfaces/cartOrder';
 import { PaymentMethodData } from '../../interfaces/paymentMethodData';
 import { UserLocalStoraged } from '../../interfaces/user';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-cart-resume',
@@ -52,6 +54,7 @@ export class CartResumeComponent implements OnChanges {
   formBuilder = inject(FormBuilder);
   apiService = inject(ApiService);
   renderer = inject(Renderer2);
+  toastr = inject(ToastrService);
 
   formGroup = this.formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -134,13 +137,13 @@ export class CartResumeComponent implements OnChanges {
 
     this.apiService.postWithAuth<CartOrder>(this.ordersUrl, order).subscribe({
       next: (createdOrder) => {
-        alert('¡Pedido creado exitosamente!');
+        this.toastr.success('¡Pedido creado exitosamente!', 'Pedido');
         this.dismissModal();
         this.clearCart();
       },
       error: (error) => {
         // console.error('Error creating order:', error);
-        alert('¡Error al crear el pedido!');
+        this.toastr.error('Hubo un error al crear el pedido.', 'Error');
       },
     });
   }
@@ -165,7 +168,7 @@ export class CartResumeComponent implements OnChanges {
       this.clickRegister();
     } else {
       this.formGroup.markAllAsTouched();
-      alert('Por favor, complete todos los campos.');
+      this.toastr.warning('Por favor, completá todos los campos.', 'Formulario incompleto');
     }
   }
 }

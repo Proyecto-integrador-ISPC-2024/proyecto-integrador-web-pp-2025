@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../../interfaces/product';
 import { CommonModule, NgIf } from '@angular/common';
 import { CartService } from '../../services/cart.service';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-card-product',
@@ -11,7 +13,7 @@ import { CartService } from '../../services/cart.service';
   standalone: true,
 })
 export class CardProductComponent {
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private toastr: ToastrService) {}
 
   @Input() product: Product = {
     id_producto_talle: 0,
@@ -45,7 +47,7 @@ export class CardProductComponent {
 
   addProductToCart(): void {
     if (this.selectedSize_id === 0 || this.selectedStock === 0 || this.selectedSize === '') {
-      alert('Por favor, primero elegí un talle.');
+      this.toastr.warning('Por favor, primero elegí un talle.', 'Atención');
       return;
     }
 
