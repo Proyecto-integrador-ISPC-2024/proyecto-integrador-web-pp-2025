@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   showProductsLink = true;
   isAuthenticated = false;
   modalFormVisible = false;
-  
+
   private authSubscription?: Subscription;
 
   constructor(
@@ -45,7 +45,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Verificar estado inicial
     this.isAuthenticated = this.authService.isAuthenticated();
     console.log('Estado inicial de autenticación:', this.isAuthenticated);
-    
+
     // Suscribirse a cambios de autenticación
     this.authSubscription = this.authService.isAuthenticated$.subscribe(isAuth => {
       console.log('Cambio de estado de autenticación:', isAuth);
@@ -84,7 +84,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.showProductsLink = !currentUrl.includes('/products');
   }
 
-  toggleTheme(event: Event){
-    console.log(event)
+  toggleTheme(event: Event):void{
+    const body = document.body;
+    const isDark = body.classList.contains('dark-theme');
+
+    if (isDark){
+      body.classList.remove('dark-theme');
+      localStorage.setItem('theme','light');
+    }else{
+      body.classList.add('dark-theme');
+      localStorage.setItem('theme','dark');
+    }
   }
 }
