@@ -44,23 +44,41 @@
 
             <div class="m-3">
               <label for="password1" class="form-label">Contraseña</label>
-              <input type="password" id="password1" class="form-control" formControlName="password1">
-              <div *ngIf="form.controls['password1'].hasError('required') && form.controls['password1'].touched">
+              <div class="input-group">
+                <input [type]="passwordFieldType1" id="password1" class="form-control" formControlName="password1">
+                <span class="input-group-text" (click)="togglePasswordVisibility(1)">
+                  <i class="fa-solid" [ngClass]="passwordFieldType1 === 'password' ? 'fa-eye' : 'fa-eye-slash'"></i>
+                </span>
+              </div>
+
+                <div *ngIf="form.controls['password1'].hasError('required') && form.controls['password1'].touched">
                 <p class="text-danger">Por favor, ingresa tu contraseña, deberá contener al menos 8 caracteres,
                   1 mayúscula, 1 minúscula, 1 número y 1 caracter especial.</p>
+              </div>
+
+              <div *ngIf="form.errors?.['passwordsMismatch'] && form.controls['password1'].touched">
+                <p class="text-danger">Las contraseñas no coinciden.</p>
               </div>
             </div>
 
             <div class="m-3">
               <label for="password2" class="form-label">Confirmar Contraseña</label>
-              <input type="password" id="password2" class="form-control" formControlName="password2">
-              <div *ngIf="form.controls['password2'].hasError('required') && form.controls['password2'].touched">
+              <div class="input-group">
+                <input [type]="passwordFieldType2" id="password2" class="form-control" formControlName="password2">
+                 <span class="input-group-text" (click)="togglePasswordVisibility(2)">
+                  <i class="fa-solid" [ngClass]="passwordFieldType2 === 'password' ? 'fa-eye' : 'fa-eye-slash'"></i>
+                </span>
+              </div>
+
+               <div *ngIf="form.controls['password2'].hasError('required') && form.controls['password2'].touched">
                 <p class="text-danger">Por favor, confirma tu contraseña.</p>
               </div>
+
               <div *ngIf="form.errors?.['passwordsMismatch'] && form.controls['password2'].touched">
                 <p class="text-danger">Las contraseñas no coinciden.</p>
               </div>
             </div>
+
 
             <div class="m-3">
               <button type="submit"

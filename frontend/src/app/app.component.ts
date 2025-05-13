@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { filter, map, mergeMap } from 'rxjs/operators';
+
+import { DarkThemeService } from './services/dark-theme.service';
 
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
@@ -16,16 +18,16 @@ import { ProductsComponent } from './pages/products/products.component';
   standalone: true,
   imports: [RouterOutlet, RouterLink, CommonModule, LandingComponent, CartComponent, DashboardComponent, HeaderComponent, ProductsComponent, FooterComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Tienda de campeones';
 
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private titleService = inject(Title);
 
-  constructor() {
+  constructor(private darkThemeService: DarkThemeService) {
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
@@ -42,5 +44,17 @@ export class AppComponent {
           this.titleService.setTitle(dynamicTitle);
         }
       });
+  }
+  // Al inicializar el componente, aplica el tema guardado
+  ngOnInit(): void {
+    this.darkThemeService.applyTheme(); // Aplica el tema al body
+  }
+
+  // Método para alternar entre los temas
+  toggleTheme(): void {
+    const currentTheme = this.darkThemeService.getTheme();
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    this.darkThemeService.setTheme(newTheme); // Guarda el nuevo tema
+    this.darkThemeService.applyTheme(); // Aplica el tema actualizado
   }
 }

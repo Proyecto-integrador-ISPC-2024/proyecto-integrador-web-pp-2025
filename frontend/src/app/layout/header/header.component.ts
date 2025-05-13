@@ -10,6 +10,8 @@ import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 
+import { DarkThemeService } from '../../services/dark-theme.service';
+
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -23,7 +25,7 @@ import { ChangeDetectorRef } from '@angular/core';
     LogoutModalComponent
   ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css',
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   showHomeLink = true;
@@ -31,6 +33,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   showProductsLink = true;
   isAuthenticated = false;
   modalFormVisible = false;
+  iconName: string = 'dark_mode';
 
   private authSubscription?: Subscription;
 
@@ -38,10 +41,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private modalService: ModalService,
     private authService: AuthService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    public darkThemeService: DarkThemeService
   ) {}
 
   ngOnInit(): void {
+     // Establece ícono inicial según el tema actual
+    this.iconName = this.darkThemeService.getTheme() === 'dark' ? 'light_mode' : 'dark_mode';
+
     // Verificar estado inicial
     this.isAuthenticated = this.authService.isAuthenticated();
     console.log('Estado inicial de autenticación:', this.isAuthenticated);
@@ -51,6 +58,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       console.log('Cambio de estado de autenticación:', isAuth);
       this.isAuthenticated = isAuth;
       this.changeDetectorRef.detectChanges(); // Forzar detección de cambios
+
     });
 
     // Manejo de navegación
@@ -74,26 +82,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  modalRegisterForm() {
+  modalRegisterForm(): void {
     this.modalService.showRegisterModal();
   }
 
   updateNavbarLinks(currentUrl: string): void {
-    this.showHomeLink = !currentUrl.includes('/') || currentUrl === '/';
-    this.showAboutLink = !currentUrl.includes('/about');
-    this.showProductsLink = !currentUrl.includes('/products');
+    this.showHomeLink = true;
+    this.showAboutLink = true;
+    this.showProductsLink = true;
   }
 
-  toggleTheme(event: Event):void{
-    const body = document.body;
-    const isDark = body.classList.contains('dark-theme');
 
-    if (isDark){
-      body.classList.remove('dark-theme');
-      localStorage.setItem('theme','light');
-    }else{
-      body.classList.add('dark-theme');
-      localStorage.setItem('theme','dark');
-    }
-  }
+  toggleTheme(): void {
+    const currentTheme = this.darkThemeService.getTheme();
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+    this.darkThemeService.setTheme(newTheme);
+    this.darkThemeService.applyTheme();
+
+     this.iconName = newTheme === 'dark' ? 'light_mode' : 'dark_mode';
 }
+  }
+

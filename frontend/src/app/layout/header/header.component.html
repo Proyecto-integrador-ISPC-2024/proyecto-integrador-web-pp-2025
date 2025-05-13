@@ -5,9 +5,8 @@
 
 <header class="container-fluid headerClass mx-0 px-0 mb-5 sticky-top">
   <nav
-    class="navbar navbar-expand-lg bg-body-tertiary nav-underline"
-    id="navbarId"
-  >
+    class="navbar navbar-expand-lg bg-body-tertiary" 
+    id="navbarId">
     <div class="container-fluid">
       <div class="d-flex flex-wrap align-items-center">
         <a [routerLink]="['/']" rel="prefetch">
@@ -78,7 +77,7 @@
                 login
               </button>
             </li>
-            
+
             <!-- Botón de logout -->
             <li class="p-0 my-0 mx-1 navItem nav-item" *ngIf="isAuthenticated">
               <button
@@ -137,9 +136,9 @@
             <li id="togglerBtnDM" class="p-0 my-0 mx-1 navItem nav-item">
               <button
                 class="material-icons align-middle border border-0 bg-transparent"
-                (click)="toggleTheme($event)"
-              >
-                dark_mode
+               (click)="toggleTheme()">
+                 {{ darkThemeService.getTheme() === 'dark' ? 'light_mode' : 'dark_mode' }}
+
               </button>
             </li>
           </ul>
