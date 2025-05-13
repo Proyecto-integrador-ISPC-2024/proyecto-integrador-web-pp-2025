@@ -14,7 +14,7 @@ import { authGuard } from './guards/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { LogoutModalComponent } from './components/logout-modal/logout-modal.component';
 import { ClientDatosComponent } from './pages/client-datos/client-datos.component';
-import { TerminosCondicionesComponent } from './pages/terminos-condiciones/terminos-condiciones.component'; 
+import { TerminosCondicionesComponent } from './pages/terminos-condiciones/terminos-condiciones.component';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent, data: { title: 'Inicio | Tienda de campeones' } },
@@ -33,7 +33,7 @@ export const routes: Routes = [
 
   { path: 'client-dashboard', component: ClientDashboardComponent, canActivate: [authGuard], data: { title: 'Mi cuenta | Tienda de campeones' } },
 
-  { path: 'client-datos', component: ClientDatosComponent, data: { title: 'Mis datos | Tienda de campeones' } },
+  { path: 'client-datos', component: ClientDatosComponent,canActivate: [authGuard], data: { title: 'Mis datos | Tienda de campeones' } },
 
   { path: 'terminos-condiciones', component: TerminosCondicionesComponent, data: { title: 'Términos y condiciones | Tienda de campeones' } },
 
