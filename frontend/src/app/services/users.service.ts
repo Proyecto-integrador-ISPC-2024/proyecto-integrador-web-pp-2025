@@ -65,4 +65,22 @@ export class UserService {
       catchError((error) => this.handleError(error))
     );
   }
+  
+  getCurrentUser(): any {
+    return JSON.parse(localStorage.getItem('currentUser') || '{}');
+  }
+  
+  // Método para obtener el rol del usuario actual
+  getUserRole(): string {
+    const user = this.getCurrentUser();
+    return user.rol || '';
+  }
+
+  // Método para crear un usuario cliente
+  createUser(userData: any): Observable<any> {
+    return this.http.post<any>(this.apiBaseUrl, userData, { headers: this.getHeaders() }).pipe(
+      catchError((error) => this.handleError(error))
+    );
+  }
 }
+
