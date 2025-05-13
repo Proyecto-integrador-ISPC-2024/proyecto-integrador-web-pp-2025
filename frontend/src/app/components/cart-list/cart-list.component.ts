@@ -18,14 +18,17 @@ export class CartListComponent {
 
   handleRemoveProduct(product: Product): void {
     this.cartList = this.cartList.filter(
-      (item) => item.id_producto_talle !== product.id_producto_talle
+      (item) => 
+        !(item.productos.id_producto === product.productos.id_producto && 
+          item.id_talleSeleccionado === product.id_talleSeleccionado)
     );
     this.cartUpdated.emit(this.cartList);
   }
 
   handleUpdateQuantity(update: { product: Product; quantity: number }): void {
     const updatedCartList = this.cartList.map((item) =>
-      item.id_producto_talle === update.product.id_producto_talle
+      item.productos.id_producto === update.product.productos.id_producto && 
+      item.id_talleSeleccionado === update.product.id_talleSeleccionado
         ? { ...item, cantidad: update.quantity }
         : item
     );
