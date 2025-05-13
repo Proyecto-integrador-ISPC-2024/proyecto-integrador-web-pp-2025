@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,30 +9,11 @@ export class AdminService {
   private baseUrl = 'http://127.0.0.1:8000';
   private adminApiUrl = `${this.baseUrl}/administrador/`;
 
-  constructor(private http: HttpClient) {}
-
-  private getHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      'Authorization': `Bearer ${localStorage.getItem('access_token') || ''}`,
-      'Content-Type': 'application/json'
-    });
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Error desconocido';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      errorMessage = `Código de error: ${error.status}\nMensaje: ${error.message}`;
-    }
-    return throwError(() => new Error(errorMessage));
-  }
+  constructor(private apiService: ApiService) {}
 
   // Obtener todos los usuarios
   getAllUsers(): Observable<any[]> {
-    return this.http.get<any[]>(this.adminApiUrl, { headers: this.getHeaders() }).pipe(
-      catchError(this.handleError)
-    );
+    return this.apiService.getWithAuth<any[]>(this.adminApiUrl);
   }
 
   // Crear un usuario administrador
@@ -46,20 +26,13 @@ export class AdminService {
       rol: userData.rol || 'CLIENTE'
     };
 
-    return this.http.post<any>(this.adminApiUrl, adminData, { headers: this.getHeaders() }).pipe(
-      catchError(error => {
-        console.error('Error al crear usuario:', error);
-        return this.handleError(error);
-      })
-    );
+    return this.apiService.postWithAuth<any>(this.adminApiUrl, adminData);
   }
 
   // Desactivar un usuario por ID
   deactivateUserById(userId: string): Observable<any> {
     const url = `${this.adminApiUrl}${userId}/`;
-    return this.http.delete<any>(url, { headers: this.getHeaders() }).pipe(
-      catchError(this.handleError)
-    );
+    return this.apiService.delete<any>(url);
   }
 
   // Verificar si el usuario actual es administrador
