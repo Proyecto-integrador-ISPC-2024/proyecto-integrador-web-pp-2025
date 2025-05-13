@@ -20,7 +20,7 @@
             <div class="mb-3">
               <label for="inputPassword" class="form-label">Contraseña</label>
               <div class="d-flex flex-row align-items-center justify-content-evenly">
-                <input type="passwordVisible ? 'text' : 'password'"  [(ngModel)]="password" name="password" required class="form-control" id="inputPassword" aria-describedby="passwordHelp" minlength="8" maxlength="20" autocomplete="current-password" />
+                <input [type]="passwordVisible ? 'text' : 'password'"  [(ngModel)]="password" name="password" required class="form-control" id="inputPassword" aria-describedby="passwordHelp" minlength="8" maxlength="20" autocomplete="current-password" />
 
 
 

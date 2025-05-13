@@ -102,8 +102,11 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegisterFormComponent {
   form: FormGroup;
+  passwordFieldType1 = 'password';
+  passwordFieldType2 = 'password';
   usuario: User = new User();
   isSubmitting = false;
+
   constructor(private formBuilder: FormBuilder,
     private authService: AuthService, private router: Router, private toastr: ToastrService) {
     this.form = this.formBuilder.nonNullable.group(
@@ -127,6 +130,16 @@ export class RegisterFormComponent {
 
     return null;
   }
+
+   // Alternar la visibilidad de la contraseña
+  togglePasswordVisibility(field: number): void {
+  if (field === 1) {
+    this.passwordFieldType1 = this.passwordFieldType1 === 'password' ? 'text' : 'password';
+  } else if (field === 2) {
+    this.passwordFieldType2 = this.passwordFieldType2 === 'password' ? 'text' : 'password';
+  }
+}
+
 
   onEnviar(event: Event): void {
     event.preventDefault();

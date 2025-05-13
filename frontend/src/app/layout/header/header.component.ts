@@ -87,9 +87,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   updateNavbarLinks(currentUrl: string): void {
-    this.showHomeLink = !currentUrl.includes('/') || currentUrl === '/';
-    this.showAboutLink = !currentUrl.includes('/about');
-    this.showProductsLink = !currentUrl.includes('/products');
+    this.showHomeLink = true;
+    this.showAboutLink = true;
+    this.showProductsLink = true;
   }
 
 
