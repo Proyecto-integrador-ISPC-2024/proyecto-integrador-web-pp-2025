@@ -8,21 +8,26 @@
   </div>
   
   <div class="row">
-    <div class="col-sm-12 col-md-8 col-lg-9 mb-5 px-3">
-      <app-admin-management
-        [orders]="filteredOrders"
-        (searchOrderById)="searchOrderById($event)"
-        (cancelOrder)="onCancelOrder($event)"
-        (markAsShipped)="onMarkAsShipped($event)"
-        #adminManagement
-      ></app-admin-management>
-    </div>
-    <div class="col-sm-12 col-md-4 col-lg-3 mb-5 px-3">
-      <app-admin-orders-summary 
-        [orders]="filteredOrders" 
-        [resetSelection]="!selectedOrder" 
-        (selectedOrder)="selectOrder($event)"
-      ></app-admin-orders-summary>
+      <div class="col-sm-12 col-md-8 col-lg-9 mb-5 px-3">
+        <app-admin-management
+          [orders]="filteredOrders"
+          (searchOrderById)="searchOrderById($event)"
+          (cancelOrder)="onCancelOrder($event)"
+          (markAsShipped)="onMarkAsShipped($event)"
+          #adminManagement
+        ></app-admin-management>
+      </div>
+      <div class="col-sm-12 col-md-4 col-lg-3 mb-5 px-3">
+        <app-admin-orders-summary 
+          [orders]="filteredOrders" 
+          [resetSelection]="!selectedOrder" 
+          (selectedOrder)="selectOrder($event)"
+        ></app-admin-orders-summary>
+      </div>
+    <div class="row">
+      <div class="col-12">
+        <app-sales-calculator></app-sales-calculator>
+      </div>
     </div>
   </div>
 </section>

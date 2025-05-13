@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AdminOrdersSummaryComponent } from '../../components/admin-orders-summary/admin-orders-summary.component';
 import { AdminManagementComponent } from '../../components/admin-management/admin-management.component';
+import { SalesCalculatorComponent } from '../../components/sales-calculator/sales-calculator.component';
 import { OrdersService } from '../../services/orders.service';
 import { DashboardOrder } from '../../interfaces/order';
 import { catchError, of, Observable } from 'rxjs';
@@ -12,7 +13,7 @@ import { ToastService } from '../../services/toast.service';
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, AdminManagementComponent, AdminOrdersSummaryComponent],
+  imports: [CommonModule, RouterModule, AdminManagementComponent, AdminOrdersSummaryComponent, SalesCalculatorComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })
