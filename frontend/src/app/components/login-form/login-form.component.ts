@@ -34,10 +34,10 @@ export class LoginFormComponent {
               const modal = bootstrap.Modal.getInstance(loginModal);
               modal?.hide();
             }
-            
+
             this.toastr.success('Autenticación exitosa', 'Bienvenido');
             this.router.navigateByUrl('/');
-            
+
             // Limpiar formulario
             this.email = '';
             this.password = '';
@@ -52,13 +52,7 @@ export class LoginFormComponent {
       });
   }
 
-  togglePasswordVisibility() {
-    this.passwordVisible = !this.passwordVisible;
-    const passwordInput = document.getElementById(
-      'inputPassword'
-    ) as HTMLInputElement;
-    if (passwordInput) {
-      passwordInput.type = this.passwordVisible ? 'text' : 'password';
-    }
-  }
+togglePasswordVisibility(): void {
+  this.passwordVisible = !this.passwordVisible;
+}
 }
