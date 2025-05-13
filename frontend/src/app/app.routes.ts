@@ -15,37 +15,38 @@ import { authGuard } from './guards/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { LogoutModalComponent } from './components/logout-modal/logout-modal.component';
 import { ClientDatosComponent } from './pages/client-datos/client-datos.component';
-import { TerminosCondicionesComponent } from './pages/terminos-condiciones/terminos-condiciones.component';
+import { TerminosCondicionesComponent } from './pages/terminos-condiciones/terminos-condiciones.component'; 
 
 export const routes: Routes = [
-  { path: '', component: LandingComponent },
+  { path: '', component: LandingComponent, data: { title: 'Inicio | Tienda de campeones' } },
 
-  { path: 'about', component: AboutUsComponent },
+  { path: 'about', component: AboutUsComponent, data: { title: 'Nosotros | Tienda de campeones' } },
 
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard | Tienda de campeones' } },
 
-  { path: 'cart', component: CartComponent, canActivate: [authGuard]},
+  { path: 'cart', component: CartComponent, canActivate: [authGuard], data: { title: 'Carrito | Tienda de campeones' } },
 
-  { path: 'products', component: ProductsComponent },
+  { path: 'products', component: ProductsComponent, data: { title: 'Productos | Tienda de campeones' } },
 
-  { path: 'contact', component: ContactComponent },
+  { path: 'contact', component: ContactComponent, data: { title: 'Contacto | Tienda de campeones' } },
 
-  { path: 'admin-dashboard', component: AdminDashboardComponent },
+  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [authGuard], data: { title: 'Admin | Tienda de campeones' } },
   
-  { path: 'admin-list-users', component: AdminListUsersComponent, canActivate: [authGuard] },
+  { path: 'admin-list-users', component: AdminListUsersComponent, canActivate: [authGuard], data: { title: 'Lista de usuarios | Tienda de campeones' } },
 
-  { path: 'client-dashboard', component: ClientDashboardComponent, canActivate: [authGuard] },
+  { path: 'client-dashboard', component: ClientDashboardComponent, canActivate: [authGuard], data: { title: 'Mi cuenta | Tienda de campeones' } },
 
-  {path: 'client-datos', component: ClientDatosComponent},
+  { path: 'client-datos', component: ClientDatosComponent, canActivate: [authGuard], data: { title: 'Mis datos | Tienda de campeones' } },
 
-  {path: 'terminos-condiciones', component: TerminosCondicionesComponent},
+  { path: 'terminos-condiciones', component: TerminosCondicionesComponent, data: { title: 'Términos y condiciones | Tienda de campeones' } },
 
-  { path: '**', component: NotFoundComponent },
+  { path: '**', component: NotFoundComponent, data: { title: 'Página no encontrada | Tienda de campeones' } },
 
-  {path: 'login-form', component: LoginFormComponent},
+  { path: 'login-form', component: LoginFormComponent, data: { title: 'Iniciar sesión | Tienda de campeones' } },
 
-  { path: 'logout', component: LogoutModalComponent },
+  { path: 'logout', component: LogoutModalComponent, data: { title: 'Cerrar sesión | Tienda de campeones' } },
 
-  {path: 'registro', component: RegisterFormComponent},
+  { path: 'registro', component: RegisterFormComponent, data: { title: 'Registrarme | Tienda de campeones' } },
+
 ];
 
