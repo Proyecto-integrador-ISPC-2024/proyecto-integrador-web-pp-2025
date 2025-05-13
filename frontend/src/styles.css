@@ -14,25 +14,32 @@
   --brown: #24160f;
 }
 
-/* Modo Oscuro*/
-
-.dark-theme {
-  --green:#3d6e41;
-  --white: #121212;
-  --black:#ffffff;
-  --primaryRed: #ff6b6b;
-  --greenCart:#57cc98;
-  --redCart: #efa76f;
-  --yellowwCart: #ffd166;
-  --brown: #1e1e1e;
-
+body {
+  background: var(--app-background, linear-gradient(120deg, var(--white) 10%, var(--green) 80%));
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
-.dark-theme body{
-  background: linear-gradient(120deg,var(--white)10%,var(--green)80%);
-  color:var(--black)
+body.light-theme {
+  --app-background: linear-gradient(120deg, var(--white) 10%, var(--green) 80%);
+  color: #000000;
 }
-/*-----------------------------*/
+
+body.dark-theme {
+  --app-background: linear-gradient(120deg, #121212 10%, #1e1e1e 80%);
+  color: #ffffff;
+}
+
+
+button.material-icons {
+  font-family: 'Material Icons';
+  font-size: 28px;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -49,13 +56,7 @@
   'opsz' 40
 }
 
-body{
-  /* #dfe9f3 */
-  background: linear-gradient(120deg, var(--white) 10%, var(--green) 80%);
-  /* background-image: url("../img/background.jpg"); */
-  background-repeat: no-repeat;
-  background-size: contain;
-}
+
 
 h1,
 h2,

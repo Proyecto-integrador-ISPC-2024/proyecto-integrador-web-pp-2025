@@ -77,7 +77,7 @@
                 login
               </button>
             </li>
-            
+
             <!-- Botón de logout -->
             <li class="p-0 my-0 mx-1 navItem nav-item" *ngIf="isAuthenticated">
               <button
@@ -136,9 +136,9 @@
             <li id="togglerBtnDM" class="p-0 my-0 mx-1 navItem nav-item">
               <button
                 class="material-icons align-middle border border-0 bg-transparent"
-                (click)="toggleTheme($event)"
-              >
-                dark_mode
+               (click)="toggleTheme()">
+                 {{ darkThemeService.getTheme() === 'dark' ? 'light_mode' : 'dark_mode' }}
+
               </button>
             </li>
           </ul>
