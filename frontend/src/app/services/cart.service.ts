@@ -12,26 +12,40 @@ export class CartService {
 
   /* Fix here */
   addToCart(product: Product): void {
-    const existingProduct = this.cartItems.find(
-      (item) => item.id_producto_talle === product.id_producto_talle
+    const existingProductIndex = this.cartItems.findIndex(
+      (item) => 
+        item.productos.id_producto === product.productos.id_producto && 
+        item.id_talleSeleccionado === product.id_talleSeleccionado
     );
 
-    if (!existingProduct) {
-      this.cartItems.push(product);
+    if (existingProductIndex === -1) {
+      this.cartItems.push({...product});
       this.updateStock(product, -product.cantidad);
-      this.cartItemsSubject.next(this.cartItems);
     } else {
-      existingProduct.cantidad += product.cantidad;
-      this.updateStock(existingProduct, -product.cantidad);
-      this.cartItemsSubject.next(this.cartItems);
+      this.cartItems[existingProductIndex].cantidad += product.cantidad;
+      this.updateStock(this.cartItems[existingProductIndex], -product.cantidad);
     }
+    
+    this.cartItemsSubject.next([...this.cartItems]);
   }
 
   removeFromCart(product: Product): void {
-    const currentItems = this.cartItemsSubject.getValue();
-    const updatedItems = currentItems.filter(
-      (item) => item.id_producto_talle !== product.id_producto_talle
+    const updatedItems = this.cartItems.filter(
+      (item) => 
+        !(item.productos.id_producto === product.productos.id_producto && 
+          item.id_talleSeleccionado === product.id_talleSeleccionado)
     );
+    
+    const removedProduct = this.cartItems.find(
+      (item) => 
+        item.productos.id_producto === product.productos.id_producto && 
+        item.id_talleSeleccionado === product.id_talleSeleccionado
+    );
+    
+    if (removedProduct) {
+      this.updateStock(removedProduct, removedProduct.cantidad);
+    }
+    
     this.setCartItems(updatedItems);
   }
 
