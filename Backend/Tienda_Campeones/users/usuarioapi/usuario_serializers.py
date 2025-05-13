@@ -9,7 +9,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuarios
-        fields = ['id_usuario', 'nombre', 'apellido', 'email', 'domicilio','rol']
+        fields = ['id_usuario', 'nombre', 'apellido', 'email', 'domicilio', 'rol', 'is_staff', 'is_superuser']
 
 class PasswordSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=128, min_length=6, write_only=True)
@@ -53,20 +53,24 @@ class UsuarioSerializer(serializers.ModelSerializer):
 class UsuarioListSerializer(serializers.ModelSerializer):    
     class Meta:
         model = Usuarios
-        fields = ['id_usuario', 'nombre', 'apellido', 'email', 'domicilio','rol', 'is_active', 'is_staff']
+        fields = ['id_usuario', 'nombre', 'apellido', 'email', 'domicilio', 'rol', 'is_active', 'is_staff', 'is_superuser']
         
         
 class adminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuarios
-        fields = ['id_usuario', 'nombre', 'apellido', 'email', 'password']
+        fields = ['id_usuario', 'nombre', 'apellido', 'email', 'password', 'is_superuser']
         extra_kwargs = {
-            'password': {'write_only': True} 
+            'password': {'write_only': True},
+            'is_superuser': {'required': False, 'default': False}
         }
 
     def create(self, validated_data):
+        is_superuser = validated_data.pop('is_superuser', False) if 'is_superuser' in validated_data else False
+        
         usuario = Usuarios(**validated_data)
         usuario.set_password(validated_data['password'])
-        usuario.rol = 'ADMIN'  
+        usuario.rol = 'ADMIN'
+        usuario.is_superuser = is_superuser
         usuario.save()
         return usuario
