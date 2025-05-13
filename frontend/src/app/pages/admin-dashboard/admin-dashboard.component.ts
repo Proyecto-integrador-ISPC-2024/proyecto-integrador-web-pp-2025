@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { AdminOrdersSummaryComponent } from '../../components/admin-orders-summary/admin-orders-summary.component';
 import { AdminManagementComponent } from '../../components/admin-management/admin-management.component';
 import { OrdersService } from '../../services/orders.service';
@@ -11,7 +12,7 @@ import { ToastService } from '../../services/toast.service';
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, AdminManagementComponent, AdminOrdersSummaryComponent],
+  imports: [CommonModule, RouterModule, AdminManagementComponent, AdminOrdersSummaryComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })

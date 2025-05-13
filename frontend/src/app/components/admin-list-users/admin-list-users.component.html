@@ -1,0 +1,262 @@
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Gestión de Usuarios</h1>
+    <div>
+      <button class="btn btn-secondary me-2" routerLink="/admin-dashboard">
+        <i class="bi bi-arrow-left me-1"></i> Volver
+      </button>
+      <button class="btn btn-primary" (click)="toggleCreateForm()">
+        <i class="bi bi-plus-circle me-1"></i>
+        {{ showCreateForm ? 'Cancelar' : 'Crear Usuario' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="card mb-4 shadow border-0" *ngIf="showCreateForm">
+    <div class="card-header bg-primary text-white py-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-person-plus me-2"></i>Crear Nuevo Usuario</h5>
+      </div>
+    </div>
+    <div class="card-body p-4">
+      <form [formGroup]="userForm" (ngSubmit)="createUser()" class="needs-validation">
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label for="nombre" class="form-label fw-semibold">
+              <i class="bi bi-person text-primary me-1"></i> Nombre <span class="text-danger">*</span>
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-person-fill"></i></span>
+              <input 
+                type="text" 
+                class="form-control border-start-0" 
+                id="nombre" 
+                formControlName="nombre" 
+                placeholder="Ingrese nombre" 
+                [ngClass]="{'is-invalid': userForm.get('nombre')?.invalid && userForm.get('nombre')?.touched, 
+                           'is-valid': userForm.get('nombre')?.valid && userForm.get('nombre')?.touched}">
+            </div>
+            <div class="invalid-feedback d-block" *ngIf="userForm.get('nombre')?.invalid && userForm.get('nombre')?.touched">
+              <i class="bi bi-exclamation-triangle me-1"></i> El nombre es requerido
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="apellido" class="form-label fw-semibold">
+              <i class="bi bi-person-badge text-primary me-1"></i> Apellido <span class="text-danger">*</span>
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-person-badge-fill"></i></span>
+              <input 
+                type="text" 
+                class="form-control border-start-0" 
+                id="apellido" 
+                formControlName="apellido" 
+                placeholder="Ingrese apellido" 
+                [ngClass]="{'is-invalid': userForm.get('apellido')?.invalid && userForm.get('apellido')?.touched,
+                           'is-valid': userForm.get('apellido')?.valid && userForm.get('apellido')?.touched}">
+            </div>
+            <div class="invalid-feedback d-block" *ngIf="userForm.get('apellido')?.invalid && userForm.get('apellido')?.touched">
+              <i class="bi bi-exclamation-triangle me-1"></i> El apellido es requerido
+            </div>
+          </div>
+        </div>
+        
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label for="email" class="form-label fw-semibold">
+              <i class="bi bi-envelope text-primary me-1"></i> Email <span class="text-danger">*</span>
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-envelope-fill"></i></span>
+              <input 
+                type="email" 
+                class="form-control border-start-0" 
+                id="email" 
+                formControlName="email" 
+                placeholder="usuario@ejemplo.com" 
+                [ngClass]="{'is-invalid': userForm.get('email')?.invalid && userForm.get('email')?.touched,
+                           'is-valid': userForm.get('email')?.valid && userForm.get('email')?.touched}">
+            </div>
+            <div class="invalid-feedback d-block" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+              <i class="bi bi-exclamation-triangle me-1"></i> Ingrese un email válido
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="password" class="form-label fw-semibold">
+              <i class="bi bi-key text-primary me-1"></i> Contraseña <span class="text-danger">*</span>
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-key-fill"></i></span>
+              <input 
+                type="password" 
+                class="form-control border-start-0" 
+                id="password" 
+                formControlName="password" 
+                placeholder="Min. 8 car. (A,a,1,@)" 
+                [ngClass]="{'is-invalid': userForm.get('password')?.invalid && userForm.get('password')?.touched,
+                           'is-valid': userForm.get('password')?.valid && userForm.get('password')?.touched}">
+            </div>
+            <div class="invalid-feedback d-block" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+              <i class="bi bi-exclamation-triangle me-1"></i> La contraseña debe tener al menos 8 caracteres, 1 mayúscula, 1 minúscula, 1 número y 1 caracter especial
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-4">
+          <label for="domicilio" class="form-label fw-semibold">
+            <i class="bi bi-house text-primary me-1"></i> Domicilio <span class="text-danger">*</span>
+          </label>
+          <div class="input-group">
+            <span class="input-group-text bg-light"><i class="bi bi-house-fill"></i></span>
+            <input 
+              type="text" 
+              class="form-control border-start-0" 
+              id="domicilio" 
+              formControlName="domicilio" 
+              placeholder="Ingrese domicilio completo" 
+              [ngClass]="{'is-invalid': userForm.get('domicilio')?.invalid && userForm.get('domicilio')?.touched,
+                         'is-valid': userForm.get('domicilio')?.valid && userForm.get('domicilio')?.touched}">
+          </div>
+          <div class="invalid-feedback d-block" *ngIf="userForm.get('domicilio')?.invalid && userForm.get('domicilio')?.touched">
+            <i class="bi bi-exclamation-triangle me-1"></i> El domicilio es requerido
+          </div>
+        </div>
+        
+        <div class="mb-4">
+          <label for="rol" class="form-label fw-semibold">
+            <i class="bi bi-person-gear text-primary me-1"></i> Rol <span class="text-danger">*</span>
+          </label>
+          <div class="input-group">
+            <span class="input-group-text bg-light"><i class="bi bi-person-gear"></i></span>
+            <select class="form-select border-start-0" id="rol" formControlName="rol">
+              <option value="CLIENTE">Cliente</option>
+              <option value="ADMIN">Administrador</option>
+            </select>
+          </div>
+          <small class="text-muted mt-1 d-block">
+            <i class="bi bi-info-circle me-1"></i> Seleccione el rol que tendrá el usuario en el sistema
+          </small>
+        </div>
+        
+        <div class="d-flex justify-content-end gap-2 mt-4">
+          <button type="submit" class="btn btn-primary px-4" [disabled]="userForm.invalid || isLoading">
+            <span *ngIf="!isLoading">
+              <i class="bi bi-person-plus-fill me-2"></i>Crear Usuario
+            </span>
+            <span *ngIf="isLoading">
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Procesando...
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card border-0">
+    <div class="card-header bg-light">
+      <h5 class="mb-0">Lista de Usuarios</h5>
+    </div>
+    <div class="card-body">
+      <div class="mb-3">
+        <div class="btn-group mb-3">
+          <button class="btn" [class.btn-primary]="activeFilter === 'TODOS'" (click)="applyFilter('TODOS')">Todos</button>
+          <button class="btn" [class.btn-primary]="activeFilter === 'ADMIN'" (click)="applyFilter('ADMIN')">Administradores</button>
+          <button class="btn" [class.btn-primary]="activeFilter === 'CLIENTE'" (click)="applyFilter('CLIENTE')">Clientes</button>
+        </div>
+
+        <div class="btn-group mb-3 ms-2">
+          <button class="btn" [class.btn-primary]="activeStatusFilter === 'TODOS'" (click)="applyStatusFilter('TODOS')">Todos</button>
+          <button class="btn" [class.btn-primary]="activeStatusFilter === 'ACTIVO'" (click)="applyStatusFilter('ACTIVO')">Activos</button>
+          <button class="btn" [class.btn-primary]="activeStatusFilter === 'INACTIVO'" (click)="applyStatusFilter('INACTIVO')">Inactivos</button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Buscar por nombre o apellido" 
+            [(ngModel)]="searchTerm"
+            (input)="applySearch(searchTerm)">
+          <button 
+            *ngIf="searchTerm" 
+            class="btn btn-outline-secondary" 
+            type="button" 
+            (click)="applySearch('')">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="isLoading">
+              <td colspan="6" class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Cargando...</span>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="users.length === 0 && !isLoading">
+              <td colspan="6" class="text-center py-4">No hay usuarios registrados</td>
+            </tr>
+            <tr *ngFor="let user of users">
+              <td>{{ user.nombre }}</td>
+              <td>{{ user.apellido }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span class="badge" [ngClass]="{
+                  'bg-danger': user.rol === 'ADMIN',
+                  'bg-primary': user.rol === 'CLIENTE'
+                }">
+                  {{ user.rol }}
+                </span>
+                <span class="badge bg-warning ms-1" *ngIf="user.is_superuser == 1 && user.is_staff == 1">SUPER</span>
+              </td>
+              <td>
+                <span class="badge" [ngClass]="{
+                  'bg-success': user.is_active,
+                  'bg-secondary': !user.is_active
+                }">
+                  {{ user.is_active ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-danger" 
+                        *ngIf="canDeactivateUser(user) && user.is_active" 
+                        (click)="deactivateUser(user)"
+                        [disabled]="isLoading">
+                  Desactivar
+                </button>
+                <span class="badge bg-secondary" 
+                      *ngIf="shouldShowNoPermission(user)">
+                  <i class="bi bi-shield-lock me-1"></i> Sin permiso
+                </span>
+                <span class="text-muted small" 
+                      *ngIf="!canDeactivateUser(user) && user.is_active && !shouldShowNoPermission(user)">
+                  <i class="bi bi-info-circle me-1"></i>
+                  <span *ngIf="user.id_usuario == userPermissions.id">Cuenta actual</span>
+                  <span *ngIf="!user.is_active">Inactivo</span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
