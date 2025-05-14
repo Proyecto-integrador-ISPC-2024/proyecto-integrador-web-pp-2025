@@ -15,7 +15,9 @@ import { authGuard } from './guards/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { LogoutModalComponent } from './components/logout-modal/logout-modal.component';
 import { ClientDatosComponent } from './pages/client-datos/client-datos.component';
-import { TerminosCondicionesComponent } from './pages/terminos-condiciones/terminos-condiciones.component'; 
+import { TerminosCondicionesComponent } from './pages/terminos-condiciones/terminos-condiciones.component';
+import { AdminGuard } from './guards/admin.guard';
+import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent, data: { title: 'Inicio | Tienda de campeones' } },
@@ -30,13 +32,13 @@ export const routes: Routes = [
 
   { path: 'contact', component: ContactComponent, data: { title: 'Contacto | Tienda de campeones' } },
 
-  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [authGuard], data: { title: 'Admin | Tienda de campeones' } },
-  
-  { path: 'admin-list-users', component: AdminListUsersComponent, canActivate: [authGuard], data: { title: 'Lista de usuarios | Tienda de campeones' } },
+  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [authGuard, AdminGuard], data: { title: 'Admin | Tienda de campeones' } },
+
+  { path: 'admin-list-users', component: AdminListUsersComponent, canActivate: [authGuard, AdminGuard], data: { title: 'Lista de usuarios | Tienda de campeones' } },
 
   { path: 'client-dashboard', component: ClientDashboardComponent, canActivate: [authGuard], data: { title: 'Mi cuenta | Tienda de campeones' } },
 
-  { path: 'client-datos', component: ClientDatosComponent, canActivate: [authGuard], data: { title: 'Mis datos | Tienda de campeones' } },
+  { path: 'client-datos', component: ClientDatosComponent,canActivate: [authGuard], data: { title: 'Mis datos | Tienda de campeones' } },
 
   { path: 'terminos-condiciones', component: TerminosCondicionesComponent, data: { title: 'Términos y condiciones | Tienda de campeones' } },
 
@@ -47,6 +49,10 @@ export const routes: Routes = [
   { path: 'logout', component: LogoutModalComponent, data: { title: 'Cerrar sesión | Tienda de campeones' } },
 
   { path: 'registro', component: RegisterFormComponent, data: { title: 'Registrarme | Tienda de campeones' } },
+
+  { path: 'unauthorized', component: UnauthorizedComponent, data: { title: 'Acceso denegado | Tienda de campeones' } },
+
+
 
 ];
 

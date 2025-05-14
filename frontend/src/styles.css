@@ -14,31 +14,6 @@
   --brown: #24160f;
 }
 
-body {
-  background: var(--app-background, linear-gradient(120deg, var(--white) 10%, var(--green) 80%));
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-
-body.light-theme {
-  --app-background: linear-gradient(120deg, var(--white) 10%, var(--green) 80%);
-  color: #000000;
-}
-
-body.dark-theme {
-  --app-background: linear-gradient(120deg, #121212 10%, #1e1e1e 80%);
-  color: #ffffff;
-}
-
-
-button.material-icons {
-  font-family: 'Material Icons';
-  font-size: 28px;
-  color: inherit;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
 
 * {
   margin: 0;
@@ -48,6 +23,22 @@ button.material-icons {
   font-family: 'Montserrat', sans-serif;
 }
 
+body {
+  background: var(--app-background, linear-gradient(120deg, var(--white) 10%, var(--green) 80%));
+
+}
+
+body.light-theme {
+  background: linear-gradient(120deg, var(--white) 10%, var(--green) 80%);
+  color: #000000;
+}
+
+body.dark-theme {
+  background-color: #002414;
+background-image: url("https://www.transparenttextures.com/patterns/football-no-lines.png");
+  color: #ffffff;
+}
+
 .material-symbols-sharp {
   font-variation-settings:
   'FILL' 0,
@@ -55,6 +46,27 @@ button.material-icons {
   'GRAD' 30,
   'opsz' 40
 }
+
+button.material-icons {
+  font-family: 'Material Icons';
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
+body.light-theme,
+body.dark-theme {
+  min-height: 100vh;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+
+
+
 
 
 
