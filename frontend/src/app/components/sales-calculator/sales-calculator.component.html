@@ -1,0 +1,46 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="mb-2">Calculadora de Ventas</h5>
+    <form (ngSubmit)="calcularVentas()">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="fechaInicio" class="form-label">Fecha Inicio</label>
+          <input
+            type="date"
+            class="form-control"
+            id="fechaInicio"
+            [(ngModel)]="fechaInicio"
+            name="fechaInicio"
+            required
+          >
+        </div>
+        <div class="col-md-6">
+          <label for="fechaFin" class="form-label">Fecha Fin</label>
+          <input
+            type="date"
+            class="form-control"
+            id="fechaFin"
+            [(ngModel)]="fechaFin"
+            name="fechaFin"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary" [disabled]="loading">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Calcular Ventas
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="error" class="alert alert-danger mt-3">
+      {{ error }}
+    </div>
+
+    <div *ngIf="totalVentas !== null" class="alert alert-success mt-3">
+      <h6 class="mb-0">Total de Ventas: ${{ totalVentas | number:'1.2-2' }}</h6>
+    </div>
+  </div>
+</div> 

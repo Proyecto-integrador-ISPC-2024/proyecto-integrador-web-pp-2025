@@ -1,0 +1,50 @@
+<section>
+  <div class="card orders-summary-card shadow-sm" style="background: #ffffff; color: #000000">
+    <h5 class="card-header p-3 d-flex align-items-center">
+      <i class="bi bi-truck me-2"></i> Estado de envíos
+    </h5>
+    <div class="card-counts">
+      <div class="status-counters">
+        <div class="count-item">
+          <span class="badge bg-secondary" [class.active-filter]="currentStatusFilter === 'TODOS'">
+            Total: {{ totalOrders }}
+          </span>
+        </div>
+        <div class="count-item">
+          <span class="badge bg-info" [class.active-filter]="currentStatusFilter === 'ENVIADO'">
+            Enviados: {{ enviadosCount }}
+          </span>
+        </div>
+        <div class="count-item">
+          <span class="badge bg-success" [class.active-filter]="currentStatusFilter === 'ACEPTADO'">
+            Aceptados: {{ aceptadosCount }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="orders-list">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item p-4 order-item" *ngFor="let order of nonCancelledOrders" (click)="selectOrder(order.id_pedido)" style="cursor: pointer;">
+            <div class="card-order d-flex justify-content-between align-items-center">
+              <span class="fw-bold">
+                Pedido N° {{ order.id_pedido }}
+              </span>
+            </div>
+            <div class="card-state">
+              <span class="text-muted">Estado:</span>
+              <span class="badge" [ngClass]="{
+                'bg-success': order.estado === 'ACEPTADO',
+                'bg-info': order.estado === 'ENVIADO',
+                'bg-danger': order.estado === 'CANCELADO'
+              }">{{ order.estado }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="p-3 text-center" *ngIf="nonCancelledOrders.length === 0">
+        <p class="text-muted mb-0">{{ emptyMessage }}</p>
+      </div>
+    </div>
+  </div>
+</section>
