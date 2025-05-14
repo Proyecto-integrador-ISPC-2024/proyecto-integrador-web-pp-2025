@@ -42,6 +42,8 @@ export const routes: Routes = [
 
   { path: 'terminos-condiciones', component: TerminosCondicionesComponent, data: { title: 'Términos y condiciones | Tienda de campeones' } },
 
+  { path: 'unauthorized', component: UnauthorizedComponent, data: { title: 'Acceso denegado | Tienda de campeones' } },
+
   { path: '**', component: NotFoundComponent, data: { title: 'Página no encontrada | Tienda de campeones' } },
 
   { path: 'login-form', component: LoginFormComponent, data: { title: 'Iniciar sesión | Tienda de campeones' } },
@@ -49,9 +51,6 @@ export const routes: Routes = [
   { path: 'logout', component: LogoutModalComponent, data: { title: 'Cerrar sesión | Tienda de campeones' } },
 
   { path: 'registro', component: RegisterFormComponent, data: { title: 'Registrarme | Tienda de campeones' } },
-
-  { path: 'unauthorized', component: UnauthorizedComponent, data: { title: 'Acceso denegado | Tienda de campeones' } },
-
 
 
 ];
