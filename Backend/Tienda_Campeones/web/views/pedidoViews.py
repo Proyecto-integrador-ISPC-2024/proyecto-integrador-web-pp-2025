@@ -96,8 +96,8 @@ class PedidosViewSet(viewsets.ModelViewSet):
  
     @action(detail=False, methods=['get'], permission_classes=[permissions.IsAdminUser])
     def calcular_ventas(self, request):
-        if not request.user.is_superuser:
-         return Response({'mensaje': 'No tienes permisos suficientes para realizar esta operacion.'}, status=status.HTTP_403_FORBIDDEN)
+        if not request.user.is_staff:
+            return Response({'mensaje': 'No tienes permisos suficientes para realizar esta operacion.'}, status=status.HTTP_403_FORBIDDEN)
 
         fecha_inicio = request.query_params.get('fecha_inicio')
         fecha_fin = request.query_params.get('fecha_fin')

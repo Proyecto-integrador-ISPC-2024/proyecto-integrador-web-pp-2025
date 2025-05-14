@@ -1,21 +1,52 @@
 .dashboard-container {
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
-    overflow-x: hidden;
-    min-height: calc(100vh - 180px); 
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow-x: hidden;
+  min-height: calc(100vh - 180px); 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.btn.btn-primary[routerLink="/admin-list-users"] {
+min-width: 160px;
+font-size: 1rem;
+padding: 0.6rem 1.7rem;
+border-radius: 8px;
+font-weight: 500;
+margin-bottom: 0;
+transition: all 0.2s ease-in-out;
+box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.btn.btn-primary[routerLink="/admin-list-users"]:hover {
+transform: translateY(-1px);
+box-shadow: 0 4px 16px rgba(0,0,0,0.12);
 }
 
 @media (max-width: 576px) {
-  h1 {
-    font-size: 1.20rem;
-    line-height: 1.1;
-    word-break: keep-all;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+h1 {
+  font-size: 1.20rem;
+  line-height: 1.1;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+.btn.btn-primary[routerLink="/admin-list-users"] {
+  width: 100%;
+  min-width: unset;
+  margin-left: 0;
+  margin-bottom: 0.5rem;
+  font-size: 0.97rem;
+  padding: 0.6rem 1rem;
+  display: block;
+}
+.dashboard-container .d-flex.justify-content-end {
+  flex-direction: column;
+  align-items: stretch;
+}
+}
+
