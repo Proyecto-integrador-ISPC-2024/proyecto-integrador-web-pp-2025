@@ -5,9 +5,11 @@ import { ProductsSuggestComponent } from '../../components/products-suggest/prod
 import { OrderManagementComponent } from '../../components/order-management/order-management.component';
 import { OrdersService } from '../../services/orders.service';
 import { DashboardOrder } from '../../interfaces/order';
-import { catchError, of, Observable } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ToastService } from '../../services/toast.service';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/users.service';
 
 @Component({
   selector: 'app-client-dashboard',
@@ -21,28 +23,38 @@ export class ClientDashboardComponent implements OnInit {
   orders: DashboardOrder[] = [];
   filteredOrders: DashboardOrder[] = [];
   selectedOrder: DashboardOrder | null = null;
-  id_usuario: number;
+  id_usuario: number = 0;
   
   @ViewChild('orderManagement') orderManagement!: OrderManagementComponent;
 
   constructor(
-    private ordersService: OrdersService,
-    private toastService: ToastService
-  ) {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (currentUser && currentUser.id_usuario) {
-      this.id_usuario = currentUser.id_usuario;
+    private ordersService: OrdersService, private toastService: ToastService, private authService: AuthService, private userService: UserService) {}
+
+  ngOnInit(): void {
+    this.initializeUserData();
+    this.loadOrders();
+  }
+
+  private initializeUserData(): void {
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser || !currentUser.nombre || !currentUser.apellido) {
+      this.userService.getUserData().subscribe({
+        next: (userData: any) => {
+          this.id_usuario = userData.id_usuario;
+          this.authService.updateCurrentUser(userData);
+        },
+        error: (error: any) => {
+          console.error('Error al obtener datos del usuario:', error);
+          this.toastService.showError('Error al cargar los datos del usuario');
+        }
+      });
     } else {
-      this.id_usuario = NaN;
+      this.id_usuario = currentUser.id_usuario;
     }
   }
   
-  ngOnInit() {
-    this.loadOrders().subscribe();
-  }
-  
-  loadOrders(): Observable<DashboardOrder[]> {
-    return this.ordersService.getAllOrders().pipe(
+  loadOrders(): void {
+    this.ordersService.getAllOrders().pipe(
       catchError(() => of([])),
       tap((orders: DashboardOrder[]) => {
         if (Array.isArray(orders)) {
@@ -50,7 +62,12 @@ export class ClientDashboardComponent implements OnInit {
           this.filteredOrders = orders.filter(order => order.id_usuario === this.id_usuario);
         }
       })
-    );
+    ).subscribe({
+      error: (error: Error) => {
+        console.error('Error al cargar pedidos:', error);
+        this.toastService.showError('Error al cargar los pedidos');
+      }
+    });
   }
   
   searchOrderById(id: number) {
@@ -112,11 +129,7 @@ export class ClientDashboardComponent implements OnInit {
         if (this.orderManagement) {
           this.orderManagement.clearSelection();
         } 
-        this.loadOrders().subscribe({
-          next: () => {
-            this.filteredOrders = [...this.orders];
-          }
-        });
+        this.loadOrders();
       }
     });
   }

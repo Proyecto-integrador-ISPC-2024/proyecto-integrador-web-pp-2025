@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,32 +10,28 @@ import { catchError } from 'rxjs/operators';
 export class UserService {
   private apiBaseUrl = 'http://127.0.0.1:8000/usuarios/'; 
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  // Obtener el token desde localStorage
   getToken(): string {
-    return localStorage.getItem('access_token') || ''; // Retorna una cadena vacía si no se encuentra el token
+    return this.authService.getToken() || ''; 
   }
   
-  // Obtener el ID del usuario desde localStorage
   getUserId(): string {
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    return user.id_usuario || '';  // ← usa la clave correcta
+    const user = this.getCurrentUser();
+    return user?.id_usuario || '';
   }
   
-
   // Configurar las cabeceras para las peticiones
   getHeaders(): HttpHeaders {
     return new HttpHeaders({
       Authorization: `Bearer ${this.getToken()}`
     });
   }
-
   // Obtener los datos del usuario
   getUserData(): Observable<any> {
     const url = `${this.apiBaseUrl}${this.getUserId()}/`;
     return this.http.get<any>(url, { headers: this.getHeaders() }).pipe(
-      catchError((error) => this.handleError(error)) // Manejo de errores
+      catchError((error) => this.handleError(error)) 
     );
   }
 
@@ -43,18 +40,15 @@ export class UserService {
     const url = `${this.apiBaseUrl}${this.getUserId()}/`;
     const payload = { [field]: value };
     return this.http.patch<any>(url, payload, { headers: this.getHeaders() }).pipe(
-      catchError((error) => this.handleError(error)) // Manejo de errores
+      catchError((error) => this.handleError(error)) 
     );
   }
 
-  // Método para manejar errores de las peticiones HTTP
   private handleError(error: any) {
     let errorMessage = 'Error desconocido';
     if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      // Error del servidor
       errorMessage = `Código de error: ${error.status}\nMensaje: ${error.message}`;
     }
     return throwError(() => new Error(errorMessage));
@@ -67,13 +61,13 @@ export class UserService {
   }
   
   getCurrentUser(): any {
-    return JSON.parse(localStorage.getItem('currentUser') || '{}');
+    return this.authService.getCurrentUser();
   }
   
   // Método para obtener el rol del usuario actual
   getUserRole(): string {
     const user = this.getCurrentUser();
-    return user.rol || '';
+    return user?.rol || '';
   }
 
   // Método para crear un usuario cliente

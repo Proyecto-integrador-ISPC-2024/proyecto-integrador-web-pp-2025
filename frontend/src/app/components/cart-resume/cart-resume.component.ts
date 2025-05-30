@@ -11,13 +11,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { Product } from '../../interfaces/product';
 import { CartOrder } from '../../interfaces/cartOrder';
 import { PaymentMethodData } from '../../interfaces/paymentMethodData';
-import { UserLocalStoraged } from '../../interfaces/user';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -37,6 +37,8 @@ export class CartResumeComponent implements OnChanges {
   };
   @Output() clearCartEvent = new EventEmitter<void>();
   @ViewChild('modalForm') modalForm!: ElementRef;
+
+  constructor(private authService: AuthService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['cartResume']) {
@@ -98,12 +100,8 @@ export class CartResumeComponent implements OnChanges {
   }
 
   getUserId(): number {
-    const user = localStorage.getItem('currentUser');
-    if (user) {
-      const userData: UserLocalStoraged = JSON.parse(user);
-      return userData.id_usuario;
-    }
-    return 0;
+    const user = this.authService.getCurrentUser();
+    return user?.id_usuario || 0;
   }
 
   createOrder(formValues: any): void {

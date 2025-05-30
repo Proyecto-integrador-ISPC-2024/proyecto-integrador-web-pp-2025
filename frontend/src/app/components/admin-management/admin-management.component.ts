@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, ViewChild, ElementRef, 
 import { CommonModule } from '@angular/common';
 import { DashboardOrder } from '../../interfaces/order';
 import { OrdersService } from '../../services/orders.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-admin-management',
@@ -44,11 +45,13 @@ export class AdminManagementComponent implements OnInit, OnDestroy {
     { title: 'Historial de pedidos', isHistory: true, active: false }
   ];
 
-  constructor(private ordersService: OrdersService) { }
+  constructor(private ordersService: OrdersService,private authService: AuthService) { }
   
   ngOnInit(): void {
-    this.loadUsers();
-    this.loadCurrentUser();
+    const isAdmin = this.authService.getUserRole() === 'ADMIN';
+    if (isAdmin) {
+      this.loadUsers();
+    }
     this.ordersService.currentStatusFilter$.subscribe(status => {
       this.currentStatusFilter = status;
       if (status === 'CANCELADO') {
@@ -62,21 +65,6 @@ export class AdminManagementComponent implements OnInit, OnDestroy {
   
   ngOnDestroy(): void {
     this.clearErrorTimeout();
-  }
-  
-  // Métodos de carga de datos
-  loadCurrentUser(): void {
-    try {
-      const currentUserStr = localStorage.getItem('currentUser');
-      if (currentUserStr) {
-        const currentUser = JSON.parse(currentUserStr);
-        if (currentUser && currentUser.id_usuario) {
-          this.usersMap.set(currentUser.id_usuario, `${currentUser.nombre} ${currentUser.apellido}`);
-        }
-      }
-    } catch (error) {
-      console.error('Error al obtener usuario actual:', error);
-    }
   }
 
   loadUsers(): void {
