@@ -17,7 +17,6 @@ export class LogoutModalComponent {
   constructor(private authService: AuthService, private router: Router) { }
 
   logout() {
-    console.log('Click en logout');
     
     // Cerrar el modal primero
     const logoutModal = document.getElementById('logoutModal');
@@ -33,6 +32,5 @@ export class LogoutModalComponent {
     }
     
     this.authService.logout();
-    console.log('Logout completado');
   }
 }

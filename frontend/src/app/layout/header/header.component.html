@@ -91,7 +91,7 @@
               </button>
             </li>
 
-            <li class="p-0 my-0 mx-1 navItem nav-item">
+            <li class="p-0 my-0 mx-1 navItem nav-item" *ngIf="isAuthenticated">
               <a
                 [routerLink]="['/cart']"
                 class="material-icons button text-decoration-none"
@@ -101,7 +101,7 @@
                 shopping_cart
               </a>
             </li>
-            <li class="p-0 my-0 mx-1 navItem nav-item dropdown-transparent">
+            <li class="p-0 my-0 mx-1 navItem nav-item dropdown-transparent" *ngIf="isAuthenticated">
               <div class="dropdown">
                 <a
                   class="btn"
@@ -118,11 +118,6 @@
                   <li class="my-1">
                     <a class="dropdown-item" [routerLink]="['/dashboard']"
                       >Panel de control</a
-                    >
-                  </li>
-                  <li class="my-1">
-                    <a class="dropdown-item" [routerLink]="['/settings']"
-                      >Configuración</a
                     >
                   </li>
                   <li class="my-1">

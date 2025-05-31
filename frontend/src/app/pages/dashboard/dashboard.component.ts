@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { AdminService } from '../../services/admin.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,28 +11,21 @@ import { RouterLink } from '@angular/router';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   userRole: string = '';
+
+  constructor(private adminService: AdminService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.getUserRole();
   }
 
   getUserRole(): void {
-    try {
-      const currentUserStr = localStorage.getItem('currentUser');
-      if (currentUserStr) {
-        const currentUser = JSON.parse(currentUserStr);
-        this.userRole = currentUser.rol || '';
-      }
-    } catch (error) {
-      console.error('Error al obtener el rol del usuario:', error);
-      this.userRole = '';
-    }
+    this.userRole = this.authService.getUserRole();
   }
 
   isAdmin(): boolean {
-    return this.userRole === 'ADMIN';
+    return this.adminService.isAdmin();
   }
 
   isClient(): boolean {

@@ -3,7 +3,7 @@ import { Product } from '../../interfaces/product';
 import { CommonModule, NgIf } from '@angular/common';
 import { CartService } from '../../services/cart.service';
 import { ToastrService } from 'ngx-toastr';
-
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-card-product',
@@ -13,7 +13,8 @@ import { ToastrService } from 'ngx-toastr';
   standalone: true,
 })
 export class CardProductComponent {
-  constructor(private cartService: CartService, private toastr: ToastrService) {}
+  constructor(private cartService: CartService, private toastr: ToastrService, private authService: AuthService
+  ) {}
 
   @Input() product: Product = {
     id_producto_talle: 0,
@@ -51,6 +52,16 @@ export class CardProductComponent {
       return;
     }
 
+    if (!this.authService.isAuthenticated()) {
+      this.toastr.warning('Primero debes iniciar sesión para agregar productos al carrito.');
+      return;
+    }
+
+    if (this.isInCart()) {
+      this.toastr.warning('Este producto ya está en tu carrito.');
+      return;
+    }
+
     const productToCart = {
       ...this.product,
       talleSeleccionado: this.selectedSize,
@@ -59,7 +70,6 @@ export class CardProductComponent {
       cantidad: 1,
     };
 
-    // console.log(productToCart);
     this.addToCart.emit(productToCart);
   }
 

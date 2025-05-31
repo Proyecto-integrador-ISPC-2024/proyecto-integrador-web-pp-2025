@@ -1,6 +1,6 @@
 <div class="container py-5">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Gestión de Usuarios</h1>
+  <h1>Gestión de Usuarios</h1>
+  <div class="d-flex justify-content-end align-items-center mb-4">
     <div>
       <button class="btn btn-secondary me-2" routerLink="/admin-dashboard">
         <i class="bi bi-arrow-left me-1"></i> Volver
@@ -88,16 +88,53 @@
             <div class="input-group">
               <span class="input-group-text bg-light"><i class="bi bi-key-fill"></i></span>
               <input 
-                type="password" 
+                [type]="showPassword ? 'text' : 'password'"
                 class="form-control border-start-0" 
                 id="password" 
                 formControlName="password" 
                 placeholder="Min. 8 car. (A,a,1,@)" 
                 [ngClass]="{'is-invalid': userForm.get('password')?.invalid && userForm.get('password')?.touched,
                            'is-valid': userForm.get('password')?.valid && userForm.get('password')?.touched}">
+              <button 
+                class="btn btn-outline-secondary" 
+                type="button" 
+                (click)="togglePasswordVisibility('password')">
+                <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+              </button>
             </div>
             <div class="invalid-feedback d-block" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
               <i class="bi bi-exclamation-triangle me-1"></i> La contraseña debe tener al menos 8 caracteres, 1 mayúscula, 1 minúscula, 1 número y 1 caracter especial
+            </div>
+          </div>
+        </div>
+        
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label for="password2" class="form-label fw-semibold">
+              <i class="bi bi-key text-primary me-1"></i> Confirmar Contraseña <span class="text-danger">*</span>
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light"><i class="bi bi-key-fill"></i></span>
+              <input 
+                [type]="showPassword2 ? 'text' : 'password'"
+                class="form-control border-start-0" 
+                id="password2" 
+                formControlName="password2" 
+                placeholder="Repita la contraseña" 
+                [ngClass]="{'is-invalid': userForm.get('password2')?.invalid && userForm.get('password2')?.touched,
+                           'is-valid': userForm.get('password2')?.valid && userForm.get('password2')?.touched}">
+              <button 
+                class="btn btn-outline-secondary" 
+                type="button" 
+                (click)="togglePasswordVisibility('password2')">
+                <i class="bi" [ngClass]="showPassword2 ? 'bi-eye-slash' : 'bi-eye'"></i>
+              </button>
+            </div>
+            <div class="invalid-feedback d-block" *ngIf="userForm.get('password2')?.invalid && userForm.get('password2')?.touched">
+              <i class="bi bi-exclamation-triangle me-1"></i> La contraseña debe tener al menos 8 caracteres, 1 mayúscula, 1 minúscula, 1 número y 1 caracter especial
+            </div>
+            <div class="invalid-feedback d-block" *ngIf="userForm.errors?.['passwordsMismatch'] && userForm.get('password2')?.touched">
+              <i class="bi bi-exclamation-triangle me-1"></i> Las contraseñas no coinciden
             </div>
           </div>
         </div>

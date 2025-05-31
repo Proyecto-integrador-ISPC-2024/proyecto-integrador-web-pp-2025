@@ -73,7 +73,6 @@ export class CartComponent implements OnInit {
       .subscribe({
         next: (methods) => {
           this.paymentMethods = methods;
-          console.log(this.paymentMethods);
         },
         error: (error) => {
           console.error('Error fetching payment methods:', error);
