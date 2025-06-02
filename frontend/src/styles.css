@@ -72,7 +72,10 @@ body.dark-theme .modal-content,
 body.dark-theme .card-header,
 body.dark-theme .card,
 body.dark-theme .card-body,
-body.dark-theme .order-card {
+body.dark-theme .order-card,
+body.dark-theme .list-group-item,
+body.dark-theme .table td,
+body.dark-theme .table th {
   background-color: var(--black) !important;
   color: #f0f0f0;
   border-bottom: 1px solid #444;
@@ -87,7 +90,9 @@ body.dark-theme .text-secondary,
 body.dark-theme .product-title,
 body.dark-theme .text-muted,
 body.dark-theme .card-title,
-body.dark-theme .card-text {
+body.dark-theme .card-text,
+body.dark-theme .form-label,
+body.dark-theme .form-text{
   color: var(--white) !important;
 }
 
@@ -97,7 +102,10 @@ body.dark-theme .card-price {
 
 body.dark-theme .navbar-toggler-icon,
 body.dark-theme .btn-close,
-body.dark-theme .order-title {
+body.dark-theme .order-title,
+body.dark-theme .form-select,
+body.dark-theme .form-control,
+body.dark-theme .input-group-text {
   filter: invert(100%);
 }
 
