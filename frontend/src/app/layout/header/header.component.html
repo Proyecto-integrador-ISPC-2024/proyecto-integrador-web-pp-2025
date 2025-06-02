@@ -12,7 +12,7 @@
         <a [routerLink]="['/']" rel="prefetch">
           <img
             class="mx-2"
-            src="/assets/images/logo-light.webp"
+            [src]="darkThemeService.getTheme() === 'dark' ? '/assets/images/logo-dark.webp' : '/assets/images/logo-light.webp'"
             alt="logo"
             id="logo"
             loading="lazy"
