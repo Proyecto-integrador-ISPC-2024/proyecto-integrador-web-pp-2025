@@ -7,8 +7,12 @@ from rest_framework.decorators import action
 from django.db.models import Sum
 from web.Serializers.pedidos_serializers import *
 from web.models import *
+import mercadopago
 
 
+# Configuración de Mercado Pago
+MERCADOPAGO_ACCESS_TOKEN = 'TEST-3933600465894180-053112-c9392bef2e7243c668ddaabda81f8f3c-266695446'
+MERCADOPAGO_PUBLIC_KEY = 'TEST-cf6a3d27-dda2-4701-b24c-d3e03d1cc5e9'
 
 class PedidosViewSet(viewsets.ModelViewSet):
     queryset = Pedidos.objects.all()
@@ -34,7 +38,8 @@ class PedidosViewSet(viewsets.ModelViewSet):
     
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=False)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
@@ -115,3 +120,107 @@ class PedidosViewSet(viewsets.ModelViewSet):
         total_ventas = pedidos.aggregate(total=Sum('total'))['total']
 
         return Response({'total_ventas': total_ventas}, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'])
+    def procesar_pago_mercadopago(self, request, pk=None):
+        try:
+            pedido = self.get_object()
+            
+            # Se verifica si el pedido ya tiene una forma de pago
+            if FormasDepagoPedidos.objects.filter(id_pedido=pedido).exists():
+                return Response({
+                    "error": "El pedido ya tiene una forma de pago asociada"
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # Se verifica que el total sea válido
+            if not pedido.total or pedido.total <= 0:
+                return Response({
+                    "error": "El total del pedido debe ser mayor a 0"
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # Se configura Mercado Pago
+            sdk = mercadopago.SDK(MERCADOPAGO_ACCESS_TOKEN)
+            
+            # Se crea la preferencia de pago
+            preference_data = {
+                "items": [
+                    {
+                        "id": str(pedido.id_pedido),
+                        "title": f"Pedido #{pedido.id_pedido}",
+                        "quantity": 1,
+                        "currency_id": "ARS",
+                        "unit_price": float(pedido.total)
+                    }
+                ],
+                "payer": {
+                    "name": "Test User",
+                    "email": "test@test.com"
+                },
+                "external_reference": str(pedido.id_pedido),
+                "payment_methods": {
+                    "excluded_payment_types": [],
+                    "installments": 1
+                },
+                "statement_descriptor": "TIENDA CAMPEONES",
+                "binary_mode": True
+            }
+            
+            try:
+                preference_response = sdk.preference().create(preference_data)
+            except Exception as e:
+                return Response({
+                    "error": f"Error al crear preferencia: {str(e)}"
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            if not preference_response:
+                return Response({
+                    "error": "No se recibió respuesta de Mercado Pago"
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            if "response" not in preference_response:
+                return Response({
+                    "error": "Error al crear la preferencia de pago"
+                }, status=status.HTTP_400_BAD_REQUEST)
+                
+            preference = preference_response["response"]
+            
+            if not isinstance(preference, dict):
+                return Response({
+                    "error": "Formato de respuesta inválido de Mercado Pago"
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            required_fields = ["init_point", "id"]
+            missing_fields = [field for field in required_fields if field not in preference]
+            
+            if missing_fields:
+                return Response({
+                    "error": f"La preferencia de pago no contiene los campos necesarios: {', '.join(missing_fields)}"
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            try:
+                forma_pago = FormasDePago.objects.get(descripcion='Mercado Pago')
+                
+                FormasDepagoPedidos.objects.create(
+                    id_pedido=pedido,
+                    id_forma_de_pago=forma_pago
+                )
+            except FormasDePago.DoesNotExist:
+                return Response({
+                    "error": "No se encontró la forma de pago Mercado Pago"
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            init_point = preference.get("init_point")
+            if not init_point:
+                return Response({
+                    "error": "No se encontró el punto de inicio de pago"
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            return Response({
+                "init_point": init_point,
+                "preference_id": preference["id"]
+            }, status=status.HTTP_200_OK)
+            
+        except Exception as e:
+            return Response({
+                "error": str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)

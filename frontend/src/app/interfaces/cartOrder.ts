@@ -1,4 +1,5 @@
 export interface CartOrder {
+  id_pedido?: number;
   id_usuario: number;
   total: number;
   detalles: Array<{
@@ -9,6 +10,6 @@ export interface CartOrder {
   }>;
   forma_de_pago: Array<{
     id_forma_de_pago: number;
-    id_tarjeta?: number | null;
+    id_tarjeta: number | null;
   }>;
 }
