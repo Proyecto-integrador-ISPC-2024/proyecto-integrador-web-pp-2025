@@ -186,7 +186,9 @@ export class OrderManagementComponent implements OnInit, OnDestroy {
   }
   
   onCancelOrder(id_pedido: number) {
-    this.cancelOrder.emit(id_pedido);
+    if (confirm('¿Está seguro que desea cancelar este pedido?')) {
+      this.cancelOrder.emit(id_pedido);
+    }
   }
 
   toggleOrderHistory(isHistory: boolean) {
