@@ -39,3 +39,9 @@
 .nav-link:hover::after {
   width: 100%;
 }
+
+#cartBtn .badge {
+  font-size: 0.7rem;
+  padding: 0.25em 0.45em;
+  line-height: 1;
+}

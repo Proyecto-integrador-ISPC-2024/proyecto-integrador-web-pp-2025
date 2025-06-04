@@ -94,11 +94,18 @@
             <li class="p-0 my-0 mx-1 navItem nav-item">
               <a
                 [routerLink]="['/cart']"
-                class="material-icons button text-decoration-none"
+                class="material-icons button text-decoration-none position-relative"
                 id="cartBtn"
                 rel="prefetch"
               >
                 shopping_cart
+                <!-- badge con cantidad -->
+                <span
+                  *ngIf="cartQty > 0"
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                >
+                  {{ cartQty }}
+                </span>
               </a>
             </li>
             <li class="p-0 my-0 mx-1 navItem nav-item dropdown-transparent">
