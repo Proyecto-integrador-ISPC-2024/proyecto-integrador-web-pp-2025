@@ -11,14 +11,17 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { ApiService } from '../../services/api.service';
+import {
+  MercadoPagoResponse,
+  MercadoPagoPaymentData,
+} from '../../interfaces/mercadopago';
 import { Product } from '../../interfaces/product';
 import { CartOrder } from '../../interfaces/cartOrder';
 import { PaymentMethodData } from '../../interfaces/paymentMethodData';
-import { UserLocalStoraged } from '../../interfaces/user';
 import { ToastrService } from 'ngx-toastr';
-
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-cart-resume',
@@ -37,6 +40,10 @@ export class CartResumeComponent implements OnChanges {
   };
   @Output() clearCartEvent = new EventEmitter<void>();
   @ViewChild('modalForm') modalForm!: ElementRef;
+
+  isProcessingPayment = false;
+
+  constructor(private authService: AuthService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['cartResume']) {
@@ -78,32 +85,93 @@ export class CartResumeComponent implements OnChanges {
       creditCardControl?.clearValidators();
     }
     creditCardControl?.updateValueAndValidity();
-
-    // console.log(this.selectedPaymentMethod);
   }
 
   onCardSelectChange(event: Event): void {
     const selectedCard = (event.target as HTMLSelectElement).value;
     this.selectedCreditCard = parseInt(selectedCard, 10);
-    /* console.log(
-      this.selectedCreditCard
-    ); */
+  }
+
+  onEnviar(event: Event): void {
+    event.preventDefault();
+    if (this.formGroup.valid) {
+      this.clickRegister();
+    } else {
+      this.formGroup.markAllAsTouched();
+      this.toastr.warning(
+        'Por favor, completá todos los campos.',
+        'Formulario incompleto'
+      );
+    }
   }
 
   clickRegister(): void {
     const formValues = this.formGroup.value;
+
     if (this.formGroup.valid) {
-      this.createOrder(formValues);
+      const mercadoPagoMethod = this.paymentMethods.formas_de_pago.find(
+        (method) => method.descripcion === 'Mercado Pago'
+      );
+
+      if (this.selectedPaymentMethod === mercadoPagoMethod?.id_forma_de_pago) {
+        this.processMercadoPagoPayment();
+      } else {
+        this.createOrder(formValues);
+      }
     }
   }
 
+  private processMercadoPagoPayment(): void {
+    if (this.isProcessingPayment) return;
+    this.isProcessingPayment = true;
+
+    const userId = this.getUserId();
+    const order: CartOrder = {
+      id_usuario: userId,
+      total: this.totalPrice,
+      detalles: this.cartResume.map((product) => ({
+        id_talle: product.id_talleSeleccionado,
+        id_producto: product.productos.id_producto,
+        cantidad: product.cantidad,
+        subtotal: product.productos.precio * product.cantidad,
+      })),
+      forma_de_pago: [],
+    };
+
+    this.apiService.postWithAuth<CartOrder>(this.ordersUrl, order).subscribe({
+      next: (createdOrder) => {
+        const paymentUrl = `${this.ordersUrl}${createdOrder.id_pedido}/procesar_pago_mercadopago/`;
+        const paymentData: MercadoPagoPaymentData = {
+          id_pedido: createdOrder.id_pedido!,
+          total: createdOrder.total,
+        };
+        this.apiService
+          .postWithAuth<MercadoPagoResponse>(paymentUrl, paymentData)
+          .subscribe({
+            next: (response) => {
+              window.location.href = response.init_point;
+            },
+            error: (error) => {
+              this.isProcessingPayment = false;
+              const errorMessage =
+                error.error?.error ||
+                'Error al procesar el pago con Mercado Pago';
+              this.toastr.error(errorMessage, 'Error');
+            },
+          });
+      },
+      error: (error) => {
+        this.isProcessingPayment = false;
+        const errorMessage =
+          error.error?.error || 'Hubo un error al crear el pedido.';
+        this.toastr.error(errorMessage, 'Error');
+      },
+    });
+  }
+
   getUserId(): number {
-    const user = localStorage.getItem('currentUser');
-    if (user) {
-      const userData: UserLocalStoraged = JSON.parse(user);
-      return userData.id_usuario;
-    }
-    return 0;
+    const user = this.authService.getCurrentUser();
+    return user?.id_usuario || 0;
   }
 
   createOrder(formValues: any): void {
@@ -113,7 +181,6 @@ export class CartResumeComponent implements OnChanges {
     );
 
     if (!paymentMethod) {
-      console.error('Selected payment method is invalid');
       return;
     }
 
@@ -142,7 +209,6 @@ export class CartResumeComponent implements OnChanges {
         this.clearCart();
       },
       error: (error) => {
-        // console.error('Error creating order:', error);
         this.toastr.error('Hubo un error al crear el pedido.', 'Error');
       },
     });
@@ -160,15 +226,5 @@ export class CartResumeComponent implements OnChanges {
   clearCart(): void {
     this.cartResume = [];
     this.clearCartEvent.emit();
-  }
-
-  onEnviar(event: Event) {
-    event.preventDefault();
-    if (this.formGroup.valid) {
-      this.clickRegister();
-    } else {
-      this.formGroup.markAllAsTouched();
-      this.toastr.warning('Por favor, completá todos los campos.', 'Formulario incompleto');
-    }
   }
 }

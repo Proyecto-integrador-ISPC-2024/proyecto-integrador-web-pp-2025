@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { UserService } from '../../services/users.service';
 import { AdminService } from '../../services/admin.service';
 import { ToastService } from '../../services/toast.service';
@@ -22,9 +22,9 @@ export class AdminListUsersComponent implements OnInit {
   activeFilter: string = 'TODOS';
   searchTerm: string = '';
   activeStatusFilter: string = 'TODOS';
-  userForm: FormGroup;
-  isLoading = false;
-  showCreateForm = false;
+  userForm!: FormGroup;
+  isLoading: boolean = false;
+  showCreateForm: boolean = false;
   isCurrentUserAdmin = false;
   isCurrentUserSuperAdmin = false;
   currentUserRole = '';
@@ -32,13 +32,17 @@ export class AdminListUsersComponent implements OnInit {
   hasAdminAccess = false;
   accessDenied = false;
   isAdmin = false;
+  showPassword = false;
+  showPassword2 = false;
 
   constructor(
-    private userService: UserService,
-    private adminService: AdminService,
-    private toastService: ToastService,
-    private fb: FormBuilder
-  ) {
+    private userService: UserService, 
+    private adminService: AdminService, 
+    private toastService: ToastService, 
+    private fb: FormBuilder) {}
+
+
+  private initializeForm(): void {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/;
     
     this.userForm = this.fb.group({
@@ -46,13 +50,10 @@ export class AdminListUsersComponent implements OnInit {
       apellido: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern(passwordRegex)]],
+      password2: ['', [Validators.required, Validators.pattern(passwordRegex)]],
       domicilio: ['', Validators.required],
       rol: ['CLIENTE', Validators.required]
-    });
-  }
-  
-  ngOnInit(): void {
-    this.loadUsers();
+    }, { validators: this.passwordsMatchValidator });
   }
 
   private initializeUserPermissions(): void {
@@ -67,6 +68,11 @@ export class AdminListUsersComponent implements OnInit {
     this.isCurrentUserAdmin = this.adminService.isAdmin();
     this.isCurrentUserSuperAdmin = this.adminService.isSuperAdmin();
     this.currentUserRole = currentUser.rol || '';
+  }
+
+  ngOnInit(): void {
+    this.initializeForm();
+    this.loadUsers();
   }
 
   loadUsers(): void {
@@ -153,6 +159,25 @@ export class AdminListUsersComponent implements OnInit {
     }
   }
 
+  passwordsMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const password = control.get('password');
+    const password2 = control.get('password2');
+
+    if (password && password2 && password.value !== password2.value) {
+      return { passwordsMismatch: true };
+    }
+
+    return null;
+  }
+
+  togglePasswordVisibility(field: 'password' | 'password2'): void {
+    if (field === 'password') {
+      this.showPassword = !this.showPassword;
+    } else {
+      this.showPassword2 = !this.showPassword2;
+    }
+  }
+  
   deactivateUser(user: any): void {
     if (!user || !user.id_usuario) {
       this.toastService.showError("No se puede desactivar: ID de usuario no válido");
@@ -244,11 +269,6 @@ export class AdminListUsersComponent implements OnInit {
   // Método para ordenar usuarios por rol
   sortUsersByRole(users: any[]): any[] {
     return [...users].sort((a, b) => {
-      const aSuper = typeof a.is_superuser === 'boolean' ? (a.is_superuser ? 1 : 0) : Number(a.is_superuser);
-      const bSuper = typeof b.is_superuser === 'boolean' ? (b.is_superuser ? 1 : 0) : Number(b.is_superuser);
-      
-      const aStaff = typeof a.is_staff === 'boolean' ? (a.is_staff ? 1 : 0) : Number(a.is_staff);
-      const bStaff = typeof b.is_staff === 'boolean' ? (b.is_staff ? 1 : 0) : Number(b.is_staff);
 
       const getPriority = (user: any): number => {
         const isSuperuser = typeof user.is_superuser === 'boolean' ? user.is_superuser : Number(user.is_superuser) === 1;

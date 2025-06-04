@@ -10,6 +10,9 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
    
     def get_queryset(self, pk=None):
+        user = self.request.user
+        if hasattr(user, 'is_staff') and user.is_staff:
+            return self.get_serializer().Meta.model.objects.all()
         if pk is None:
             return self.get_serializer().Meta.model.objects.filter(is_active=True)
         return self.get_serializer().Meta.model.objects.filter(id_usuario=pk, is_active=True).first()

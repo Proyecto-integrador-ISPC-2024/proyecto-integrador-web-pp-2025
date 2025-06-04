@@ -12,11 +12,11 @@ import { AdminListUsersComponent } from './components/admin-list-users/admin-lis
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { RegisterFormComponent } from './components/register-form/register-form.component';
 import { authGuard } from './guards/auth.guard';
-import { HttpClientModule } from '@angular/common/http';
 import { LogoutModalComponent } from './components/logout-modal/logout-modal.component';
 import { ClientDatosComponent } from './pages/client-datos/client-datos.component';
 import { TerminosCondicionesComponent } from './pages/terminos-condiciones/terminos-condiciones.component';
 import { AdminGuard } from './guards/admin.guard';
+import { ClientGuard } from './guards/client.guard';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 
 export const routes: Routes = [
@@ -36,7 +36,7 @@ export const routes: Routes = [
 
   { path: 'admin-list-users', component: AdminListUsersComponent, canActivate: [authGuard, AdminGuard], data: { title: 'Lista de usuarios | Tienda de campeones' } },
 
-  { path: 'client-dashboard', component: ClientDashboardComponent, canActivate: [authGuard], data: { title: 'Mi cuenta | Tienda de campeones' } },
+  { path: 'client-dashboard', component: ClientDashboardComponent, canActivate: [authGuard, ClientGuard], data: { title: 'Mi cuenta | Tienda de campeones' } },
 
   { path: 'client-datos', component: ClientDatosComponent,canActivate: [authGuard], data: { title: 'Mis datos | Tienda de campeones' } },
 

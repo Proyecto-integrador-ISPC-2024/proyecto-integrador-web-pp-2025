@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ThemeButtonComponent } from '../../components/theme-button/theme-button.component';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RegisterFormComponent } from '../../components/register-form/register-form.component';
 import { ModalService } from '../../services/modalstatus.service';
@@ -16,11 +15,9 @@ import { DarkThemeService } from '../../services/dark-theme.service';
   selector: 'app-header',
   standalone: true,
   imports: [
-    ThemeButtonComponent,
     RegisterFormComponent,
     RouterLink,
     CommonModule,
-    RouterLinkActive,
     LoginFormComponent,
     LogoutModalComponent
   ],
@@ -51,11 +48,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     // Verificar estado inicial
     this.isAuthenticated = this.authService.isAuthenticated();
-    console.log('Estado inicial de autenticación:', this.isAuthenticated);
 
     // Suscribirse a cambios de autenticación
     this.authSubscription = this.authService.isAuthenticated$.subscribe(isAuth => {
-      console.log('Cambio de estado de autenticación:', isAuth);
       this.isAuthenticated = isAuth;
       this.changeDetectorRef.detectChanges(); // Forzar detección de cambios
 

@@ -3,7 +3,14 @@ from users.models import Usuarios
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    pass
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['rol'] = user.rol
+        token['is_staff'] = user.is_staff
+        token['is_superuser'] = user.is_superuser
+        token['id_usuario'] = user.id_usuario
+        return token
 
 
 class UserSerializer(serializers.ModelSerializer):

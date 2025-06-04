@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Product } from '../interfaces/product';
 import { User } from '../interfaces/user';
 import { CartOrder } from '../interfaces/cartOrder';
+import { MercadoPagoPaymentData } from '../interfaces/mercadopago';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -31,7 +32,7 @@ export class ApiService {
   // Post
   postWithAuth<T>(
     url: string,
-    body: Product | User | CartOrder
+    body: Product | User | CartOrder | T | MercadoPagoPaymentData
   ): Observable<T> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
@@ -54,8 +55,7 @@ export class ApiService {
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
-    })
+    });
     return this.httpClient.delete<T>(url, { headers }) as Observable<T>;
   }
 }
-

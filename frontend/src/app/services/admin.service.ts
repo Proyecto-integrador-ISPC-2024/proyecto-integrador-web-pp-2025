@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class AdminService {
   private baseUrl = 'http://127.0.0.1:8000';
   private adminApiUrl = `${this.baseUrl}/administrador/`;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private authService: AuthService) {}
 
   // Obtener todos los usuarios
   getAllUsers(): Observable<any[]> {
@@ -37,30 +38,21 @@ export class AdminService {
 
   // Verificar si el usuario actual es administrador
   isAdmin(): boolean {
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    
-    if (!user) {
+    try {
+      const user = this.authService.getCurrentUser();
+      return user?.rol === 'ADMIN' && user?.is_staff === true;
+    } catch {
       return false;
     }
-    
-    const hasAdminRole = user.rol === 'ADMIN';
-    const isStaff = user.is_staff === true || user.is_staff === 1 || user.is_staff === '1';
-    
-    return hasAdminRole && isStaff;
   }
 
   // Verificar si el usuario actual es superadministrador
   isSuperAdmin(): boolean {
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    
-    if (!user) {
+    try {
+      const user = this.authService.getCurrentUser();
+      return user?.rol === 'ADMIN' && user?.is_staff === true && user?.is_superuser === true;
+    } catch {
       return false;
     }
-    
-    const hasAdminRole = user.rol === 'ADMIN';
-    const isStaff = user.is_staff === true || user.is_staff === 1 || user.is_staff === '1';
-    const isSuperuser = user.is_superuser === true || user.is_superuser === 1 || user.is_superuser === '1';
-    
-    return hasAdminRole && isStaff && isSuperuser;
   }
 } 

@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, ViewChild, ElementRef, 
 import { CommonModule } from '@angular/common';
 import { DashboardOrder } from '../../interfaces/order';
 import { OrdersService } from '../../services/orders.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-order-management',
@@ -43,19 +44,10 @@ export class OrderManagementComponent implements OnInit, OnDestroy {
     { title: 'Historial de pedidos', isHistory: true, active: false }
   ];
 
-  constructor(private ordersService: OrdersService) { }
+  constructor(private ordersService: OrdersService, private authService: AuthService) { }
   
   ngOnInit(): void {
-    const currentUserStr = localStorage.getItem('currentUser');
-    let isAdmin = false;
-    if (currentUserStr) {
-      const currentUser = JSON.parse(currentUserStr);
-      isAdmin = currentUser?.rol === 'admin';
-    }
-    if (isAdmin) {
-      this.loadUsers();
-    }
-    this.loadCurrentUser();
+    this.loadUsers();
     this.ordersService.currentStatusFilter$.subscribe(status => {
       this.currentStatusFilter = status;
       if (status === 'CANCELADO') {
@@ -72,19 +64,6 @@ export class OrderManagementComponent implements OnInit, OnDestroy {
   }
   
   // Métodos de carga de datos
-  loadCurrentUser(): void {
-    try {
-      const currentUserStr = localStorage.getItem('currentUser');
-      if (currentUserStr) {
-        const currentUser = JSON.parse(currentUserStr);
-        if (currentUser && currentUser.id_usuario) {
-          this.usersMap.set(currentUser.id_usuario, `${currentUser.nombre} ${currentUser.apellido}`);
-        }
-      }
-    } catch (error) {
-      console.error('Error al obtener usuario actual:', error);
-    }
-  }
 
   loadUsers(): void {
     this.ordersService.getUsers().subscribe({
@@ -97,7 +76,7 @@ export class OrderManagementComponent implements OnInit, OnDestroy {
         console.error('Error al cargar usuarios:', error);
       }
     });
-  }  
+  } 
 
   // Getters y filtros 
   get filteredOrders(): DashboardOrder[] {
@@ -207,7 +186,9 @@ export class OrderManagementComponent implements OnInit, OnDestroy {
   }
   
   onCancelOrder(id_pedido: number) {
-    this.cancelOrder.emit(id_pedido);
+    if (confirm('¿Está seguro que desea cancelar este pedido?')) {
+      this.cancelOrder.emit(id_pedido);
+    }
   }
 
   toggleOrderHistory(isHistory: boolean) {
@@ -264,7 +245,19 @@ export class OrderManagementComponent implements OnInit, OnDestroy {
   }
   
   getUserName(userId: number): string {
-    return this.usersMap.get(userId) || `Usuario ID: ${userId}`;
+    const userName = this.usersMap.get(userId);
+    if (!userName) {
+      const currentUser = this.authService.getCurrentUser();
+      if (currentUser && currentUser.id_usuario === userId) {
+        if (currentUser.nombre && currentUser.apellido) {
+          const fullName = `${currentUser.nombre} ${currentUser.apellido}`;
+          this.usersMap.set(userId, fullName);
+          return fullName;
+        }
+      }
+      return 'Usuario';
+    }
+    return userName;
   }
   
   orderExists(id: number | null): boolean {
