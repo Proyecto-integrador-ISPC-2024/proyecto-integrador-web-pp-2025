@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="row">
-      <button type="button" class="btn btn-success col my-1 mx-3 cartBtn" data-bs-toggle="modal"
+      <button *ngIf="!(adminService.isAdmin() || adminService.isSuperAdmin())" type="button" class="btn btn-success col my-1 mx-3 cartBtn" data-bs-toggle="modal"
         data-bs-target="#modalForm">
         Finalizar compra
       </button>

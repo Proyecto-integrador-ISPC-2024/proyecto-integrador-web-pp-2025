@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { DashboardOrder } from '../../interfaces/order';
 import { OrdersService } from '../../services/orders.service';
 import { AuthService } from '../../services/auth.service';
+import { LoadingSpinnerComponent } from '../../components/spinner/spinner.component';
 
 @Component({
   selector: 'app-admin-management',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingSpinnerComponent],
   templateUrl: './admin-management.component.html',
   styleUrls: ['./admin-management.component.css']
 })
@@ -44,6 +45,8 @@ export class AdminManagementComponent implements OnInit, OnDestroy {
     { title: 'Resumen de pedidos', isHistory: false, active: true },
     { title: 'Historial de pedidos', isHistory: true, active: false }
   ];
+
+  @Input() isLoading: boolean = false;
 
   constructor(private ordersService: OrdersService,private authService: AuthService) { }
   

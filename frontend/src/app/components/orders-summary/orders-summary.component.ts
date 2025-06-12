@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { DashboardOrder } from '../../interfaces/order';
 import { OrdersService } from '../../services/orders.service';
 import { Subscription } from 'rxjs';
+import { LoadingSpinnerComponent } from '../../components/spinner/spinner.component';
 
 @Component({
   selector: 'app-orders-summary',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingSpinnerComponent],
   templateUrl: './orders-summary.component.html',
   styleUrls: ['./orders-summary.component.css']
 })
@@ -18,6 +19,7 @@ export class OrdersSummaryComponent implements OnInit, OnDestroy {
       this.selectedOrderId = null;
     }
   }
+  @Input() isLoading: boolean = false;
   
   @Output() selectedOrder = new EventEmitter<number>();
   
