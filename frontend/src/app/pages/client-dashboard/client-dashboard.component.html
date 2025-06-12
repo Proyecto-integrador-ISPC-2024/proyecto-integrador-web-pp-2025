@@ -4,6 +4,7 @@
     <div class="col-sm-12 col-md-8 col-lg-9 mb-5 px-3">
       <app-order-management
         [orders]="filteredOrders"
+        [isLoading]="isLoading"
         (searchOrderById)="searchOrderById($event)"
         (cancelOrder)="onCancelOrder($event)"
         #orderManagement
@@ -11,9 +12,10 @@
     </div>
     <div class="col-sm-12 col-md-4 col-lg-3 mb-5 px-3">
       <app-orders-summary 
-      [orders]="filteredOrders" 
-      [resetSelection]="!selectedOrder" 
-      (selectedOrder)="selectOrder($event)"
+        [orders]="filteredOrders" 
+        [resetSelection]="!selectedOrder" 
+        [isLoading]="isLoading"
+        (selectedOrder)="selectOrder($event)"
       ></app-orders-summary>
     </div>
   </div>

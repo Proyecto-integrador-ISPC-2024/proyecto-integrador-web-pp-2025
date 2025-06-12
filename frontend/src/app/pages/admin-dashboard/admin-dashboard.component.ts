@@ -6,8 +6,8 @@ import { AdminManagementComponent } from '../../components/admin-management/admi
 import { SalesCalculatorComponent } from '../../components/sales-calculator/sales-calculator.component';
 import { OrdersService } from '../../services/orders.service';
 import { DashboardOrder } from '../../interfaces/order';
-import { catchError, of, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { catchError, of } from 'rxjs';
+import { tap, finalize } from 'rxjs/operators';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
@@ -21,6 +21,7 @@ export class AdminDashboardComponent implements OnInit {
   orders: DashboardOrder[] = [];
   filteredOrders: DashboardOrder[] = [];
   selectedOrder: DashboardOrder | null = null;
+  isLoading: boolean = true;
   
   @ViewChild('adminManagement') adminManagement!: AdminManagementComponent;
 
@@ -29,20 +30,37 @@ export class AdminDashboardComponent implements OnInit {
     private toastService: ToastService
   ) {}
   
-  ngOnInit() {
-    this.loadOrders().subscribe();
+  ngOnInit(): void {
+    this.loadOrders();
   }
   
-  loadOrders(): Observable<DashboardOrder[]> {
-    return this.ordersService.getAllOrdersAdmin().pipe(
+  loadOrders(): void {
+    this.isLoading = true;
+    const startTime = Date.now();
+    const MIN_LOADING_TIME = 500;
+
+    this.ordersService.getAllOrders().pipe(
       catchError(() => of([])),
       tap((orders: DashboardOrder[]) => {
         if (Array.isArray(orders)) {
           this.orders = orders;
           this.filteredOrders = orders;
         }
+      }),
+      finalize(() => {
+        const elapsedTime = Date.now() - startTime;
+        const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsedTime);
+        
+        setTimeout(() => {
+          this.isLoading = false;
+        }, remainingTime);
       })
-    );
+    ).subscribe({
+      error: (error: Error) => {
+        console.error('Error al cargar pedidos:', error);
+        this.toastService.showError('Error al cargar los pedidos');
+      }
+    });
   }
   
   searchOrderById(id: number) {
@@ -87,11 +105,7 @@ export class AdminDashboardComponent implements OnInit {
         if (this.adminManagement) {
           this.adminManagement.clearSelection();
         } 
-        this.loadOrders().subscribe({
-          next: () => {
-            this.filteredOrders = [...this.orders];
-          }
-        });
+        this.loadOrders();
       }
     });
   }
@@ -104,11 +118,7 @@ export class AdminDashboardComponent implements OnInit {
         if (this.adminManagement) {
           this.adminManagement.clearSelection();
         }
-        this.loadOrders().subscribe({
-          next: () => {
-            this.filteredOrders = [...this.orders];
-          }
-        });
+        this.loadOrders();
       }
     });
   }

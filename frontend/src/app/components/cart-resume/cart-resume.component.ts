@@ -22,6 +22,7 @@ import { CartOrder } from '../../interfaces/cartOrder';
 import { PaymentMethodData } from '../../interfaces/paymentMethodData';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../services/auth.service';
+import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-cart-resume',
@@ -43,7 +44,7 @@ export class CartResumeComponent implements OnChanges {
 
   isProcessingPayment = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, public adminService: AdminService, private toastr: ToastrService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['cartResume']) {
@@ -61,7 +62,6 @@ export class CartResumeComponent implements OnChanges {
   formBuilder = inject(FormBuilder);
   apiService = inject(ApiService);
   renderer = inject(Renderer2);
-  toastr = inject(ToastrService);
 
   formGroup = this.formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -106,6 +106,11 @@ export class CartResumeComponent implements OnChanges {
   }
 
   clickRegister(): void {
+    if (this.adminService.isAdmin() || this.adminService.isSuperAdmin()) {
+      this.toastr.error('Los administradores no pueden generar pedidos', 'Error');
+      return;
+    }
+
     const formValues = this.formGroup.value;
 
     if (this.formGroup.valid) {
