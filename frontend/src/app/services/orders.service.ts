@@ -52,13 +52,6 @@ export class OrdersService {
     return this.userService.getAllUsers();
   }
   
-  getAllOrdersAdmin(): Observable<DashboardOrder[]> {
-    return this.apiService.getWithAuth<DashboardOrder[]>(this.ordersUrl).pipe(
-      map((orders: DashboardOrder[]) => Array.isArray(orders) ? orders : []),
-      catchError(() => of([]))
-    );
-  }
-  
   shipOrder(id_pedido: number): Observable<DashboardOrder> {
     const url = `${this.ordersUrl}${id_pedido}/enviar/`;
     return this.apiService.getWithAuth<DashboardOrder>(url).pipe(

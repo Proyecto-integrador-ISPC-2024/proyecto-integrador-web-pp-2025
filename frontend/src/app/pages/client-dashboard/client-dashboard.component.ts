@@ -5,7 +5,7 @@ import { ProductsSuggestComponent } from '../../components/products-suggest/prod
 import { OrderManagementComponent } from '../../components/order-management/order-management.component';
 import { OrdersService } from '../../services/orders.service';
 import { DashboardOrder } from '../../interfaces/order';
-import { catchError, of } from 'rxjs';
+import { catchError, of, finalize } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ToastService } from '../../services/toast.service';
 import { AuthService } from '../../services/auth.service';
@@ -24,6 +24,7 @@ export class ClientDashboardComponent implements OnInit {
   filteredOrders: DashboardOrder[] = [];
   selectedOrder: DashboardOrder | null = null;
   id_usuario: number = 0;
+  isLoading: boolean = true;
   
   @ViewChild('orderManagement') orderManagement!: OrderManagementComponent;
 
@@ -54,6 +55,10 @@ export class ClientDashboardComponent implements OnInit {
   }
   
   loadOrders(): void {
+    this.isLoading = true;
+    const startTime = Date.now();
+    const MIN_LOADING_TIME = 500; 
+
     this.ordersService.getAllOrders().pipe(
       catchError(() => of([])),
       tap((orders: DashboardOrder[]) => {
@@ -61,6 +66,14 @@ export class ClientDashboardComponent implements OnInit {
           this.orders = orders;
           this.filteredOrders = orders.filter(order => order.id_usuario === this.id_usuario);
         }
+      }),
+      finalize(() => {
+        const elapsedTime = Date.now() - startTime;
+        const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsedTime);
+        
+        setTimeout(() => {
+          this.isLoading = false;
+        }, remainingTime);
       })
     ).subscribe({
       error: (error: Error) => {

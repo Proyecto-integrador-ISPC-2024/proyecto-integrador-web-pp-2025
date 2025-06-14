@@ -6,12 +6,13 @@ import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl, Valid
 import { UserService } from '../../services/users.service';
 import { AdminService } from '../../services/admin.service';
 import { ToastService } from '../../services/toast.service';
-import { catchError, of } from 'rxjs';
+import { catchError, of, finalize } from 'rxjs';
+import { LoadingSpinnerComponent } from '../../components/spinner/spinner.component';
 
 @Component({
   selector: 'app-admin-list-users',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, LoadingSpinnerComponent],
   templateUrl: './admin-list-users.component.html',
   styleUrl: './admin-list-users.component.css'
 })
@@ -77,20 +78,28 @@ export class AdminListUsersComponent implements OnInit {
 
   loadUsers(): void {
     this.isLoading = true;
+    const startTime = Date.now();
+    const MIN_LOADING_TIME = 500;
     this.initializeUserPermissions();
-    
+
     this.adminService.getAllUsers()
       .pipe(
         catchError(error => {
           this.isLoading = false;
           this.toastService.showError('Error al cargar la lista de usuarios');
           return of([]);
+        }),
+        finalize(() => {
+          const elapsedTime = Date.now() - startTime;
+          const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsedTime);
+          
+          setTimeout(() => {
+            this.isLoading = false;
+          }, remainingTime);
         })
       )
       .subscribe({
         next: (data) => {
-          this.isLoading = false;
-          
           if (data && data.length > 0) {
             this.allUsers = this.sortUsersByRole(data);
             this.applyFilters();
