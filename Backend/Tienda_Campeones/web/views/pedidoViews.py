@@ -11,8 +11,7 @@ import mercadopago
 
 
 # Configuración de Mercado Pago
-MERCADOPAGO_ACCESS_TOKEN = 'TEST-3933600465894180-053112-c9392bef2e7243c668ddaabda81f8f3c-266695446'
-MERCADOPAGO_PUBLIC_KEY = 'TEST-cf6a3d27-dda2-4701-b24c-d3e03d1cc5e9'
+
 
 class PedidosViewSet(viewsets.ModelViewSet):
     queryset = Pedidos.objects.all()
